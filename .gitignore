@@ -1,0 +1,8 @@
+/.idea
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+_ide_helper.php
+/public/components
+.env

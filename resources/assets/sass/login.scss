@@ -1,0 +1,38 @@
+/**
+ * Handcrafted with ♥ Beebit Solutions
+ * Real coffee was used in this project development
+ * Licensed under MIT License
+ * contacto@beebit.es
+ */
+@import "common";
+
+#auth_wrapper
+{
+  @include fullscreen-bg("/img/background-logo.jpg");
+  overflow: hidden;
+  display:table;
+  text-align: center;
+  width: 100%;
+  .container
+  {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    .btn
+    {
+      margin-top:20px;
+      width: 100%;
+      min-height: 60px;
+      font-size:18px;
+      line-height: 60px;
+    }
+    #auth_box
+    {
+      @include shadow(0.35);
+      @include border-radius(3px);
+      padding: 20px 20px 30px;
+      background-color: white;
+    }
+  }
+}
+

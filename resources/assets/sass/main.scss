@@ -1,0 +1,46 @@
+/**
+ * Handcrafted with ♥ Beebit Solutions
+ * Real coffee was used in this project development
+ * Licensed under MIT License
+ * contacto@beebit.es
+ */
+a:hover
+{
+  text-decoration: underline;
+}
+li{
+  a:hover
+  {
+    text-decoration: none !important;
+  }
+}
+
+.btn{
+  text-decoration: none !important;
+}
+
+.hoverable-table
+{
+  tbody tr
+  {
+    &:hover
+    {
+      background-color: #EEEEEE;
+    }
+  }
+}
+
+#wrapper
+{
+  min-height:100%;
+  position:relative;
+}
+
+#header
+{
+  height:64px;
+}
+
+#content{
+  padding-bottom:50px;
+}
