@@ -73,7 +73,7 @@ class AudioController extends Controller
         if ($request->hasFile('audio')) {
             Log::info('General information log');
             if ($request->file('audio')->isValid()) {
-                $request->file('audio')->move("storage/app/audio", $request->file('audio')->getFilename());
+                $request->file('audio')->move(base_path()."/storage/app/audio/", $request->file('audio')->getFilename());
             }
         }
         ($save) ? $audio->save() : null;

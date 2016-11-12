@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::open(["method" => "post", "route" => "audio.store"]) !!}
+    {!! Form::open(["method" => "post", "enctype" => "multipart/form-data","route" => "audio.store"]) !!}
     @include("audio._model")
     {!! Form::close() !!}
 @endsection
