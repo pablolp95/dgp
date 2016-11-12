@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleTableSeeder::class);
         $this->call(UserTableSeeder::class);
-	      $this->call(ClienteTableSeeder::class);
+        $this->call(ClienteTableSeeder::class);
         $this->call(FacturaTableSeeder::class);
         $this->call(ImpuestoTableSeeder::class);
         $this->call(PresupuestoTableSeeder::class);
@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FacturaServicioTableSeeder::class);
         $this->call(PresupuestoProductoTableSeeder::class);
         $this->call(PresupuestoServicioTableSeeder::class);
+        $this->call(AudioTableSeeder::class);
 
         Model::reguard();
     }

@@ -26,7 +26,7 @@
     </div>
 </div>
 
-        <!--  Scripts-->
+<!--  Scripts-->
 <script src="/components/jquery/dist/jquery.min.js"></script>
 <script src="/components/jquery.cookie/jquery.cookie.js"></script>
 <script src="/components/Materialize/dist/js/materialize.min.js"></script>
@@ -35,7 +35,8 @@
 <script src="/components/pickadate/lib/compressed/picker.js"></script>
 <script src="/components/pickadate/lib/compressed/picker.date.js"></script>
 <script src="/components/pickadate/lib/compressed/translations/es_ES.js"></script>
-<script src="/js/ddsi.min.js"></script>
+{{--<script src="/js/ddsi.min.js"></script>--}}
+<script src="/js/dgp.js"></script>
 @if(Session::has('flash_message'))
     <script>
         Materialize.toast('{{session('flash_message')}}',6000);

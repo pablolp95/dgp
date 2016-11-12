@@ -7,7 +7,7 @@ $menu_elems = [
 <div class="navbar-fixed">
     <nav class="indigo">
         <div class="nav-wrapper container">
-            <a href="{{route('dashboard')}}" class="brand-logo">DDSI</a>
+            <a href="{{route('dashboard')}}" class="brand-logo">DGP</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li>

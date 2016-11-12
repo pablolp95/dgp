@@ -1,21 +1,19 @@
 <?php
 $dashboard_elems = [
-        route("producto.create") => ["deployment", "Crear productos",["admin"]],
-        route("servicio.create") => ["add_database", "Crear servicios",["admin"]],
-        route("producto.index") => ["shop", "Productos",["admin"]],
-        route("servicio.index") => ["accept_database", "Servicios",["admin"]],
-        route("proyecto.index") => ["opened_folder", "Proyectos", ["administrativo","admin"]],
-        route("proyecto.create") => ["idea", "Crear proyecto", ["administrativo","admin"]],
-        route("cliente.index") => ["contacts", "Agenda", ["administrativo","admin"]],
-        route("cliente.create") => ["good_decision", "Nuevo cliente", ["administrativo","admin"]],
-        route("factura.index") => ["filing_cabinet", "Ver facturas", ["financiero","admin"]],
-        route("factura.create") => ["invite", "Nueva factura", ["financiero","admin"]],
-        route("usuario.index") => ["address_book", "Usuarios", ["administrativo","admin"]],
-        route("usuario.create") => ["key", "Crear usuario", ["administrativo","admin"]],
-        route("presupuesto.index") => ["money_transfer","Presupuestos",["administrativo","admin"]],
-        route("presupuesto.create") => ["calculator","Nuevo presupuesto",["administrativo","admin"]],
-        route("impuesto.index") => ["list","Impuestos", ["financiero","admin"]],
-        route("impuesto.create") => ["donate","Nuevo impuesto", ["financiero","admin"]]
+        route('stand.create') => ['deployment', 'Crear stand',['admin']],
+        route('stand.index') => ['add_database', 'Stands',['admin']],
+        route('zone.create') => ['shop', 'Crear zona',['admin']],
+        route('zone.index') => ['accept_database', 'Zonas',['admin']],
+        route('route.create') => ['opened_folder', 'Crear ruta', ['administrativo','admin']],
+        route('route.index') => ['idea', 'Rutas', ['administrativo','admin']],
+        route('image.create') => ['contacts', 'Añadir imágenes', ['administrativo','admin']],
+        route('image.index') => ['image_file', 'Imágenes', ['administrativo','admin']],
+        route('audio.create') => ['filing_cabinet', 'Añadir audio', ['financiero','admin']],
+        route('audio.index') => ['audio_file', 'Audios', ['financiero','admin']],
+        route('video.create') => ['money_transfer','Añadir vídeos',['administrativo','admin']],
+        route('video.index') => ['video_file','Vídeos',['administrativo','admin']],
+        route('usuario.create') => ['key', 'Crear usuario', ['administrativo','admin']],
+        route('usuario.index') => ['address_book', 'Usuarios', ['administrativo','admin']]
 ];
 $i=1;
 ?>

@@ -14,10 +14,9 @@ Entrust::routeNeedsRole('dashboard*',['administrativo','admin','financiero'],Red
 Route::get('dashboard', function()
 {
     $username = Auth::user()->name;
-    return view('dashboard', ["name" => $username]);
+    return view('dashboard', ['name' => $username]);
 })->name('dashboard');
 
-Route::get("test","ClienteController@test");
 // Authentication routes...
 Route::get('/', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('/login', ['as' => 'login.submit', 'uses' => 'Auth\AuthController@postLogin']);
@@ -31,42 +30,50 @@ Route::post('password', ['as' => 'password.submit', 'uses' => 'Auth\PasswordCont
 Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
 Route::post('password/reset', ['as' => 'password.reset.submit', 'uses' => 'Auth\PasswordController@postReset']);
 
-Entrust::routeNeedsRole('cliente*',['administrativo','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('presupuesto*',['administrativo','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('proyecto*',['administrativo','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('impuesto*',['financiero','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('factura*',['financiero','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('producto*',['admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('servicio*',['admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('stand*',['administrativo','admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('zone*',['administrativo','admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('route*',['administrativo','admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('audio*',['financiero','admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('image*',['financiero','admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('video*',['admin'],Redirect::to('dashboard'),false);
 Entrust::routeNeedsRole('usuario*',['administrativo','admin'],Redirect::to('dashboard'),false);
 
+//API REST HTML
+Route::resource('stand','StandController');
+Route::resource('zone','ZoneController');
+Route::resource('route','RouteController');
+Route::resource('audio','AudioController');
+Route::resource('image','ImageController');
+Route::resource('video','VideoController');
+Route::resource('usuario','UsuarioController');
 
-Route::resource("producto","ProductoController");
-Route::resource("servicio","ServicioController");
-Route::resource("cliente","ClienteController");
-Route::resource("factura","FacturaController");
-Route::resource("impuesto","ImpuestoController");
-Route::resource("presupuesto","PresupuestoController");
-Route::resource("proyecto","ProyectoController");
-Route::resource("usuario","UsuarioController");
+Route::post('stand/search',['as' => 'stand.search', 'uses' => 'StandController@search']);
+Route::post('zone/search',['as' => 'zone.search', 'uses' => 'ZoneController@search']);
+Route::post('route/search',['as' => 'route.search', 'uses' => 'RouteController@search']);
+Route::post('audio/search',['as' => 'audio.search', 'uses' => 'AudioController@search']);
+Route::post('image/search',['as' => 'image.search', 'uses' => 'ImageController@search']);
+Route::post('video/search',['as' => 'video.search', 'uses' => 'VideoController@search']);
+Route::post('usuario/search',['as' => 'usuario.search', 'uses' => 'UsuarioController@search']);
 
 
-Route::post("producto/buscar",["as" => "producto.search", "uses" => "ProductoController@search"]);
-Route::post("servicio/buscar",["as" => "servicio.search", "uses" => "ServicioController@search"]);
-Route::post("usuario/buscar",["as" => "usuario.search", "uses" => "UsuarioController@search"]);
-Route::post("cliente/buscar",["as" => "cliente.search", "uses" => "ClienteController@search"]);
-Route::post("factura/buscar",["as" => "factura.search", "uses" => "FacturaController@search"]);
-Route::post("presupuesto/buscar",["as" => "presupuesto.search", "uses" => "PresupuestoController@search"]);
-Route::post("proyecto/buscar",["as" => "proyecto.search", "uses" => "ProyectoController@search"]);
+//Routes to associate
+Route::get('stand/{id}/associate/audio',['as' => 'stand.associate.audio', 'uses' => 'StandController@associateAudio']);
+Route::post('stand/{id}/associate/audio',['as' => 'stand.add.audio', 'uses' => 'StandController@addAudio']);
+Route::get('stand/{id}/associate/image',['as' => 'stand.associate.image', 'uses' => 'StandController@associateImage']);
+Route::post('stand/{id}/associate/image',['as' => 'stand.add.image', 'uses' => 'StandController@addImage']);
+Route::get('stand/{id}/associate/video',['as' => 'stand.associate.video', 'uses' => 'StandController@associateVideo']);
+Route::post('stand/{id}/associate/video',['as' => 'stand.add.video', 'uses' => 'StandController@addVideo']);
 
-Route::get("proyecto/{id}/asociar/factura",["as" => "proyecto.associate.invoice", "uses" => "ProyectoController@associateInvoice"]);
-Route::post("proyecto/{id}/asociar/factura",["as" => "proyecto.add.invoice", "uses" => "ProyectoController@addInvoice"]);
-Route::get("proyecto/{id}/asociar/presupuesto",["as" => "proyecto.associate.proposal", "uses" => "ProyectoController@associateProposal"]);
-Route::post("proyecto/{id}/asociar/presupuesto",["as" => "proyecto.add.proposal", "uses" => "ProyectoController@addProposal"]);
+Route::get('zone/{id}/associate/stand',['as' => 'zone.associate.stand', 'uses' => 'ZoneController@associateStand']);
+Route::post('zone/{id}/associate/stand',['as' => 'zone.add.stand', 'uses' => 'ZoneController@addStand']);
 
-Route::get("presupuesto/{id}/asociar/factura",["as" => "presupuesto.associate.invoice", "uses" => "PresupuestoController@associateInvoice"]);
-Route::post("presupuesto/{id}/asociar/factura",["as" => "presupuesto.add.invoice", "uses" => "PresupuestoController@addInvoice"]);
+Route::get('route/{id}/associate/stand',['as' => 'route.associate.stand', 'uses' => 'RouteController@associateStand']);
+Route::post('route/{id}/associate/stand',['as' => 'route.add.stand', 'uses' => 'RouteController@addStand']);
 
-Route::get("api/producto/{id}",["as" => "producto.get.json", "uses" => "ProductoController@get"]);
-Route::get("api/servicio/{id}",["as" => "servicio.get.json", "uses" => "ServicioController@get"]);
-Route::get("api/impuesto/{id}",["as" => "impuesto.get.json", "uses" => "ImpuestoController@get"]);
+//API REST JSON
+Route::get('api/stand/{id}',['as' => 'stand.get.json', 'uses' => 'StandController@get']);
+Route::get('api/zone/{id}',['as' => 'zone.get.json', 'uses' => 'ZoneController@get']);
+Route::get('api/route/{id}',['as' => 'route.get.json', 'uses' => 'RouteController@get']);
+Route::get('api/audio/{id}',['as' => 'audio.get.json', 'uses' => 'AudioController@get']);
+Route::get('api/image/{id}',['as' => 'image.get.json', 'uses' => 'ImageController@get']);
+Route::get('api/video/{id}',['as' => 'video.get.json', 'uses' => 'VideoController@get']);
