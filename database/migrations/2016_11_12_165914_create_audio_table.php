@@ -20,6 +20,8 @@ class CreateAudioTable extends Migration
             $table->integer('last_update_user_id')->index()->unsigned()->nullable();
 
             $table->string('name');
+            $table->string('filename')->nullable();
+            $table->string('original_filename')->nullable();
             $table->text('description')->nullable();
             $table->string('audio_url')->nullable();
             $table->string('language')->nullable();

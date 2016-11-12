@@ -71,7 +71,6 @@ class AudioController extends Controller
         $audio->language = $request->input('language');
         $audio->audio_url = $request->input('audio_url');
         if ($request->hasFile('audio')) {
-            Log::info('General information log');
             if ($request->file('audio')->isValid()) {
                 $request->file('audio')->move(base_path()."/storage/app/audio/", $request->file('audio')->getFilename());
             }
