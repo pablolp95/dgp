@@ -16,6 +16,9 @@ class CreateImagesTable extends Migration
             $table->increments('id');
             $table->timestamps();
 
+            $table->integer('user_id')->index()->unsigned();
+            $table->integer('last_update_user_id')->index()->unsigned()->nullable();
+            
             $table->string('name');
             $table->string('filename')->nullable();
             $table->string('original_filename')->nullable();
