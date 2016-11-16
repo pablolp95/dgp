@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Audio extends Model
 {
-    public function stands()
+    public function stand()
     {
-        return $this->belongsToMany('App\Stand');
+        return $this->belongsTo('App\Stand');
+    }
+
+    public function language()
+    {
+        return $this->belongsTo('App\Language');
     }
 
     public function user()

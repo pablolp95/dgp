@@ -4,11 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Impuesto extends Model
+class Text extends Model
 {
-    public function facturas()
+    public function stand()
     {
-        return $this->belongsToMany('App\Facturas');
+        return $this->belongsTo('App\Stand');
+    }
+
+    public function language()
+    {
+        return $this->belongsTo('App\Language');
     }
 
     public function user()

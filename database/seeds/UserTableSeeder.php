@@ -14,7 +14,7 @@ class UserTableSeeder extends Seeder
         DB::table('users')->insert([
             'name'=>'admin',
             'email'=>'admin@gmail.com',
-            'password'=>bcrypt('ddsi'),
+            'password'=>bcrypt('dgp'),
             'remember_token' =>str_random(10),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),
@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
         DB::table('users')->insert([
             'name'=>'administrativo',
             'email'=>'administrativo@gmail.com',
-            'password'=>bcrypt('ddsi'),
+            'password'=>bcrypt('dgp'),
             'remember_token' =>str_random(10),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),
@@ -38,7 +38,7 @@ class UserTableSeeder extends Seeder
         DB::table('users')->insert([
             'name'=>'financiero',
             'email'=>'financiero@gmail.com',
-            'password'=>bcrypt('ddsi'),
+            'password'=>bcrypt('dgp'),
             'remember_token' =>str_random(10),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),

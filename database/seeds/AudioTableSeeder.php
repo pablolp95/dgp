@@ -19,7 +19,6 @@ class AudioTableSeeder extends Seeder
             'name' => 'Ejemplo audio',
             'description' => 'Ejemplo descripción',
             'audio_url' => '',
-            'language' => 'Español',
         ]);
     }
 }

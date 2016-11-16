@@ -176,5 +176,5 @@ class AudioController extends Controller
         }
 
         return response()->json($audio);
-    }    
+    }
 }

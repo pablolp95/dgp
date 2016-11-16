@@ -8,17 +8,17 @@ class Stand extends Model
 {
     public function images()
     {
-        return $this->belongsToMany('App\Image');
+        return $this->hasMany('App\Image');
     }
 
     public function audio()
     {
-        return $this->belongsToMany('App\Audio');
+        return $this->hasMany('App\Audio');
     }
 
     public function videos()
     {
-        return $this->belongsToMany('App\Video');
+        return $this->hasMany('App\Video');
     }
 
     public function zones()

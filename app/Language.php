@@ -4,11 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Producto extends Model
+class Language extends Model
 {
-    public function facturas()
+    public function audio()
     {
-        return $this->belongsToMany('App\Factura');
+        return $this->hasMany('App\Audio');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany('App\Video');
+    }
+
+    public function texts()
+    {
+        return $this->hasMany('App\Text');
     }
 
     public function user()

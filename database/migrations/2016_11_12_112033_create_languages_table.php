@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImagesTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,31 +12,23 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
 
             $table->integer('user_id')->index()->unsigned();
             $table->integer('last_update_user_id')->index()->unsigned()->nullable();
-            $table->integer('stand_id')->index()->unsigned()->nullable();
-            
-            $table->string('name');
-            $table->string('filename')->nullable();
-            $table->string('original_filename')->nullable();
-            $table->text('description')->nullable();
-            $table->string('image_url')->nullable();
+
+            $table->string('language');
         });
 
-        Schema::table('images', function(Blueprint $table) {
+        Schema::table('languages', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
             $table->foreign('last_update_user_id')
                 ->references('id')
                 ->on('users');
-            $table->foreign('stand_id')
-                ->references('id')
-                ->on('stands');
         });
     }
 
@@ -47,6 +39,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('images');
+        Schema::drop('languages');
     }
 }

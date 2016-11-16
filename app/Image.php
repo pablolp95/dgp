@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    public function stands()
+    public function stand()
     {
-        return $this->belongsToMany('App\Stand');
+        return $this->belongsTo('App\Stand');
     }
 
     public function user()
