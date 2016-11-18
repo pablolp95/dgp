@@ -1,19 +1,19 @@
 <?php
 $dashboard_elems = [
-        route('stand.create') => ['deployment', 'Crear stand',['admin']],
-        route('stand.index') => ['add_database', 'Stands',['admin']],
-        route('zone.create') => ['shop', 'Crear zona',['admin']],
-        route('zone.index') => ['accept_database', 'Zonas',['admin']],
-        route('route.create') => ['opened_folder', 'Crear ruta', ['administrativo','admin']],
-        route('route.index') => ['idea', 'Rutas', ['administrativo','admin']],
-        route('image.create') => ['contacts', 'Añadir imágenes', ['administrativo','admin']],
-        route('image.index') => ['image_file', 'Imágenes', ['administrativo','admin']],
-        route('audio.create') => ['filing_cabinet', 'Añadir audio', ['financiero','admin']],
-        route('audio.index') => ['audio_file', 'Audios', ['financiero','admin']],
-        route('video.create') => ['money_transfer','Añadir vídeos',['administrativo','admin']],
-        route('video.index') => ['video_file','Vídeos',['administrativo','admin']],
-        route('usuario.create') => ['key', 'Crear usuario', ['administrativo','admin']],
-        route('usuario.index') => ['address_book', 'Usuarios', ['administrativo','admin']]
+        route('stand.create') => ['deployment', 'Crear stand',['empleado','admin']],
+        route('stand.index') => ['add_database', 'Stands',['empleado','admin']],
+        route('zone.create') => ['shop', 'Crear zona',['empleado','admin']],
+        route('zone.index') => ['accept_database', 'Zonas',['empleado','admin']],
+        route('route.create') => ['opened_folder', 'Crear ruta', ['empleado','admin']],
+        route('route.index') => ['idea', 'Rutas', ['empleado','admin']],
+        route('image.create') => ['contacts', 'Añadir imágenes', ['empleado','admin']],
+        route('image.index') => ['image_file', 'Imágenes', ['empleado','admin']],
+        route('audio.create') => ['filing_cabinet', 'Añadir audio', ['empleado','admin']],
+        route('audio.index') => ['audio_file', 'Audios', ['empleado','admin']],
+        route('video.create') => ['money_transfer','Añadir vídeos',['empleado','admin']],
+        route('video.index') => ['video_file','Vídeos',['empleado','admin']],
+        route('usuario.create') => ['key', 'Crear usuario', ['admin']],
+        route('usuario.index') => ['address_book', 'Usuarios', ['admin']]
 ];
 $i=1;
 ?>

@@ -40,7 +40,7 @@ if(isset($usuario)) {
     <!-- Role dropdown select -->
     <div class="col s12 m6">
         {!! Form::label("role", "Rol del usuario:") !!}
-        {!! Form::select("role", $roles, $current_role, ["id" => "role", "class" => "browser-default"]) !!}
+        {!! Form::select("role", $roles, $current_role, ["id" => "role"]) !!}
     </div>
     
     <div class="col s12">

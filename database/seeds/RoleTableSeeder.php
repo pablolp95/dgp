@@ -18,14 +18,8 @@ class RoleTableSeeder extends Seeder
             'updated_at' => Carbon\Carbon::now(),
         ]);
         DB::table('roles')->insert([
-            'name' => 'administrativo',
-            'display_name' => 'Gestor Administrativo',
-            'created_at' => Carbon\Carbon::now(),
-            'updated_at' => Carbon\Carbon::now(),
-        ]);
-        DB::table('roles')->insert([
-            'name' => 'financiero',
-            'display_name' => 'Administrador Financiero',
+            'name' => 'empleado',
+            'display_name' => 'Empleado',
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),
         ]);

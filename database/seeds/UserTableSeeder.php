@@ -24,27 +24,16 @@ class UserTableSeeder extends Seeder
         $user->attachRole(1);
 
         DB::table('users')->insert([
-            'name'=>'administrativo',
-            'email'=>'administrativo@gmail.com',
+            'name'=>'empleado',
+            'email'=>'empleado@gmail.com',
             'password'=>bcrypt('dgp'),
             'remember_token' =>str_random(10),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),
         ]);
 
-        $user = App\User::where('email', '=', 'administrativo@gmail.com')->first();
+        $user = App\User::where('email', '=', 'empleado@gmail.com')->first();
         $user->attachRole(2);
-
-        DB::table('users')->insert([
-            'name'=>'financiero',
-            'email'=>'financiero@gmail.com',
-            'password'=>bcrypt('dgp'),
-            'remember_token' =>str_random(10),
-            'created_at' => Carbon\Carbon::now(),
-            'updated_at' => Carbon\Carbon::now(),
-        ]);
-
-        $user = App\User::where('email', '=', 'financiero@gmail.com')->first();
-        $user->attachRole(3);
+        
     }
 }
