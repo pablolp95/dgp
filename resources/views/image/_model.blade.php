@@ -2,13 +2,7 @@
     <!-- Name field -->
     <div class="input-field col s12 m6">
         {!! Form::text("name", null, ["id" => "name","class" => "validate"]) !!}
-        {!! Form::label("name", "Nombre del video:*") !!}
-    </div>
-
-    !-- Language field -->
-    <div class="input-field col s12 m6">
-        {!! Form::select("language", ['Español', 'English', 'Alemán'], null, ["id" => "language"]) !!}
-        {!! Form::label("language", "Idioma:*") !!}
+        {!! Form::label("name", "Nombre del imagen:*") !!}
     </div>
 
     <!-- Description field -->
@@ -21,7 +15,7 @@
     <div class="file-field input-field col s12">
         <div class="btn indigo">
             <span>Seleccionar fichero</span>
-            {!! Form::file('videos')!!}
+            {!! Form::file('image')!!}
         </div>
         <div class="file-path-wrapper">
             <input class="file-path validate" type="text">

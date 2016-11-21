@@ -1,16 +1,16 @@
 @extends("create")
 
 @section("title")
-    Crear un nuevo video
+    Crear una nueva imagen
 @endsection
 
 @section("resource_title")
-    Crear un nuevo video
+    Crear una nueva imagen
 @endsection
 
 @section("form")
-    {!! Form::open(["method" => "post",  "enctype" => "multipart/form-data","route" => "video.store"]) !!}
-    @include("videos._model")
+    {!! Form::open(["method" => "post",  "enctype" => "multipart/form-data","route" => "image.store"]) !!}
+    @include("image._model")
     {!! Form::close() !!}
 @endsection
 
