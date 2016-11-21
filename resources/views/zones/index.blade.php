@@ -38,6 +38,7 @@
             <td class="date">{{ $zona->description }}</td>
             <td class="center-align">
                 <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('zone.edit', ['id' => $zona->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar"><i class="material-icons">create</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light indigo tooltipped" href="{{ route('zone.associate.stand', ['id' => $zona->id]) }}" data-position="top" data-delay="50" data-tooltip="Asociar stand"><i class="material-icons">note_add</i></a>
                 <a class="btn-floating btn-large waves-effect waves-light red" href="{{ route('zone.show', ['id' => $zona->id]) }}"><i class="material-icons">visibility</i></a>
             </td>
         </tr>

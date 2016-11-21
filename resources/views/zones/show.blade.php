@@ -37,4 +37,23 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col s6">
+            <div class="card indigo darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Stands :</span>
+                </div>
+                <div class="card-action indigo lighten-5 indigo-text">
+                    <div class="row ">
+                        <div class="col s12">
+                            @foreach($stands as $stand)
+                                <p>Stand <a href="{{ route("stand.show",$stand->id) }}">#{{$stand->id}}</a></p>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
