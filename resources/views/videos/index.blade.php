@@ -32,15 +32,15 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($videos as $videos)
+    @foreach($videos as $video)
         <tr>
-            <td>{{ $videos->id }}</td>
-            <td>{{ $videos->name }}</td>
-            <td class="truncate">{{ $videos->description }}</td>
-            <td>{{ $videos->language }}</td>
+            <td>{{ $video->id }}</td>
+            <td>{{ $video->name }}</td>
+            <td class="truncate">{{ $video->description }}</td>
+            <td>{{ $video->language }}</td>
             <td class="center-align">
-                <a class="btn-floating btn-large waves-effect waves-light deep-orange" href="{{ route('video.edit', ['id' => $videos->id]) }}"><i class="material-icons">create</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light red" href="{{ route('video.show', ['id' => $videos->id]) }}"><i class="material-icons">visibility</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('video.edit', ['id' => $video->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar video"><i class="material-icons">create</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('video.show', ['id' => $video->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar video"><i class="material-icons">visibility</i></a>
             </td>
         </tr>
     @endforeach

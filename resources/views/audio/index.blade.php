@@ -39,8 +39,8 @@
             <td class="truncate">{{ $audio->description }}</td>
             <td>{{ $audio->language }}</td>
             <td class="center-align">
-                <a class="btn-floating btn-large waves-effect waves-light deep-orange" href="{{ route('audio.edit', ['id' => $audio->id]) }}"><i class="material-icons">create</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light red" href="{{ route('audio.show', ['id' => $audio->id]) }}"><i class="material-icons">visibility</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('audio.edit', ['id' => $audio->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar audio"><i class="material-icons">create</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('audio.show', ['id' => $audio->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar audio"><i class="material-icons">visibility</i></a>
             </td>
         </tr>
     @endforeach

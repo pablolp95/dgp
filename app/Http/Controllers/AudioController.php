@@ -68,11 +68,17 @@ class AudioController extends Controller
         $audio->last_update_user_id = Auth::id();
         $audio->name = $request->input('name');
         $audio->description = $request->input('description');
-        $audio->language = $request->input('language');
-        $audio->audio_url = $request->input('audio_url');
+        $audio->language_id = null;
+        $audio->audio_url = null;
+
         if ($request->hasFile('audio')) {
             if ($request->file('audio')->isValid()) {
-                $request->file('audio')->move(base_path()."/storage/app/audio/", $request->file('audio')->getFilename());
+                Log::info('Hay fichero');
+                $extension = $request->file('audio')->getClientOriginalExtension();
+                $audio->mime = $request->file('audio')->getClientMimeType();
+                $audio->original_filename = $request->file('audio')->getClientOriginalName();
+                $audio->filename = $request->file('audio')->getFilename().'.'.$extension;
+                $request->file('audio')->move(base_path()."/storage/app/audio/", $request->file('audio')->getFilename().'.'.$extension);
             }
         }
         ($save) ? $audio->save() : null;
@@ -176,5 +182,21 @@ class AudioController extends Controller
         }
 
         return response()->json($audio);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile($id)
+    {
+        try {
+            $audio = Audio::findOrFail($id);
+
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->download(base_path()."/storage/app/audio/".$audio->filename, $audio->original_filename, ['Content-Type' => $audio->mime]);
     }
 }

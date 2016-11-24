@@ -40,7 +40,7 @@
                 <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('stand.edit', ['id' => $stand->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar"><i class="material-icons">create</i></a>
                 <a class="btn-floating btn-large waves-effect waves-light indigo tooltipped" href="{{ route('stand.associate.audio', ['id' => $stand->id]) }}" data-position="top" data-delay="50" data-tooltip="Asociar audio"><i class="material-icons">note_add</i></a>
                 <a class="btn-floating btn-large waves-effect waves-light indigo tooltipped" href="{{ route('stand.associate.video', ['id' => $stand->id]) }}" data-position="top" data-delay="50" data-tooltip="Asociar video"><i class="material-icons">note_add</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light red" href="{{ route('stand.show', ['id' => $stand->id]) }}"><i class="material-icons">visibility</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('stand.show', ['id' => $stand->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar stand"><i class="material-icons">visibility</i></a>
             </td>
         </tr>
     @endforeach

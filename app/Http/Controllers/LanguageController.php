@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Image;
+use App\Language;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,7 +12,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ImageController extends Controller
+class LanguageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,8 +21,8 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $images = Image::orderBy('created_at', 'desc')->paginate(15);
-        return view('images.index',compact('images'));
+        $languages = Language::orderBy('created_at', 'desc')->paginate(15);
+        return view('languages.index',compact('languages'));
     }
 
     /**
@@ -32,8 +32,7 @@ class ImageController extends Controller
      */
     public function create()
     {
-        //
-        return view('images.create');
+        return view('languages.create');
     }
 
     /**
@@ -42,40 +41,35 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try{
-            $image = new Image();
-            $image->user_id = Auth::id();
-            $this->silentSave($image,$request);
+            $language = new Language();
+            $language->user_id = Auth::id();
+            $this->silentSave($language,$request);
         } catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha creado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('images.index');
+        session()->flash('flash_message', 'Se ha añadido el idioma #'.$language->id.' - '.$language->language.' con éxito');
+        return redirect()->route('languages.index');
     }
 
     /**
      * Basic save operation used for update & store.
      *
-     * @param image
+     * @param $language
      * @param Request $request
      * @param bool $save
      * @return mixed
      */
-    public function silentSave(&$image, Request $request, $save = true)
+    public function silentSave(&$language, Request $request, $save = true)
     {
-        $image->last_update_user_id = Auth::id();
-        $image->name = $request->input('name');
-        $image->description = $request->input('description');
-        $image->image_url = $request->input('image_url');
-        if ($request->hasFile('image')) {
-            if ($request->file('image')->isValid()) {
-                $request->file('image')->move(base_path()."/storage/app/image/", $request->file('image')->getFilename());
-            }
-        }
-        ($save) ? $image->save() : null;
-        return $image;
+        $language->last_update_user_id = Auth::id();
+        $language->language = $request->input('language');
+
+        ($save) ? $language->save() : null;
+        return $language;
     }
 
     /**
@@ -86,8 +80,8 @@ class ImageController extends Controller
      */
     public function show($id)
     {
-        $image = Image::findOrFail($id);
-        return view('images.show',compact('image'));
+        $language = Language::findOrFail($id);
+        return view('languages.show',compact('language'));
     }
 
     /**
@@ -98,8 +92,8 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        $image = Image::findOrFail($id);
-        return view('images.edit',compact('image'));
+        $language = Language::findOrFail($id);
+        return view('languages.edit',compact('language'));
     }
 
     /**
@@ -112,14 +106,14 @@ class ImageController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $image = Image::findOrFail($id);
-            $this->silentSave($image,$request);
+            $language = Language::findOrFail($id);
+            $this->silentSave($language,$request);
         } catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha actualizado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('dashboard');
+        session()->flash('flash_message', 'Se ha actualizado el idioma #'.$language->id.' - '.$language->language.' con éxito');
+        return redirect()->route('languages.index');
     }
 
     /**
@@ -130,10 +124,10 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        $image = Image::findOrFail($id);
-        $image->delete();
-        session()->flash('flash_message', 'Se ha eliminado la imagen #'.$id.' con éxito');
-        return redirect()->route('images.index');
+        $language = Language::findOrFail($id);
+        $language->delete();
+        session()->flash('flash_message', 'Se ha eliminado el idioma #'.$id.' con éxito');
+        return redirect()->route('languages.index');
     }
 
     /**
@@ -144,25 +138,24 @@ class ImageController extends Controller
      */
     public function find($id)
     {
-        $image = Image::findOrFail($id);
-        return view('images.show',compact('image'));
+        $language = Language::findOrFail($id);
+        return view('languages.show',compact('language'));
     }
 
-
     /**
-     * Searches for an especific audio name
+     * Searches for an especific language language
      * @param Request $request
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
      */
     public function search(Request $request)
     {
-        $image = Image::where('name','like','%'.$request->input('search').'%')
+        $languages = Language::where('language','like','%'.$request->input('search').'%')
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('images.index',compact('image'));
+        return view('languages.index',compact('languages'));
     }
-    
+
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -170,11 +163,12 @@ class ImageController extends Controller
     public function get($id)
     {
         try {
-            $image = Video::findOrFail($id);
+            $language = Language::findOrFail($id);
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
 
-        return response()->json($image);
+        return response()->json($language);
     }
+
 }

@@ -1,5 +1,9 @@
 @extends("show")
 
+@section("title")
+    Editando audio #{{ $audio->id }}
+@endsection
+
 @section("resource_title")
     Audio #{{ $audio->id }} - {{ $audio->name }}
 @endsection

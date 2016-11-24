@@ -1,15 +1,15 @@
 @extends("create")
 
 @section("title")
-    Editando Video #{{ $videos->id }}
+    Editando video #{{ $video->id }} - {{ $video->name }}
 @endsection
 
 @section("resource_title")
-    Editando Video #{{ $videos->id }} - {{ $videos->name }}
+    Editando video #{{ $video->id }} - {{ $video->name }}
 @endsection
 
 @section("form")
-    {!! Form::model($videos, ["method" => "put", "route" => array("video.update", $videos->id)]) !!}
+    {!! Form::model($video, ["method" => "put", "route" => array("video.update", $video->id)]) !!}
     @include("videos._model")
     {!! Form::close() !!}
     @include("videos._destroy")

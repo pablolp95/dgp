@@ -1,1 +1,0 @@
-<a href="{{ $url }}" class="collection-item">{{ $elem }} - {{ $price }}€</a>

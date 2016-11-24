@@ -26,6 +26,7 @@ class CreateAudioTable extends Migration
             $table->string('original_filename')->nullable();
             $table->text('description')->nullable();
             $table->string('audio_url')->nullable();
+            $table->string('mime')->nullable();
         });
 
         Schema::table('audio', function(Blueprint $table) {

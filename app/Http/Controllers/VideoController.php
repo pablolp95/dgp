@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Video;
 
+use App\Video;
 use Auth;
 use Log;
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -23,7 +21,6 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
         $videos = Video::orderBy('created_at', 'desc')->paginate(15);
         return view('videos.index',compact('videos'));
     }
@@ -35,7 +32,6 @@ class VideoController extends Controller
      */
     public function create()
     {
-        //
         return view('videos.create');
     }
 
@@ -47,15 +43,40 @@ class VideoController extends Controller
      */
     public function store(Request $request){
         try{
-            $videos = new Video();
-            $videos->user_id = Auth::id();
-            $this->silentSave($videos,$request);
+            $video = new Video();
+            $video->user_id = Auth::id();
+            $this->silentSave($video,$request);
         } catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha creado el audio #'.$videos->id.' - '.$videos->name.' con éxito');
+        session()->flash('flash_message', 'Se ha creado el video #'.$video->id.' - '.$video->name.' con éxito');
         return redirect()->route('video.index');
+    }
+
+    /**
+     * Basic save operation used for update & store.
+     *
+     * @param $video
+     * @param Request $request
+     * @param bool $save
+     * @return mixed
+     */
+    public function silentSave(&$video, Request $request, $save = true)
+    {
+        $video->last_update_user_id = Auth::id();
+        $video->name = $request->input('name');
+        $video->description = $request->input('description');
+        $video->language_id = null;
+        $video->video_url = null;
+
+        if ($request->hasFile('video')) {
+            if ($request->file('video')->isValid()) {
+                $request->file('video')->move(base_path()."/storage/app/video/", $request->file('video')->getFilename());
+            }
+        }
+        ($save) ? $video->save() : null;
+        return $video;
     }
 
     /**
@@ -64,26 +85,10 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function silentSave(&$videos, Request $request, $save = true)
-    {
-        $videos->last_update_user_id = Auth::id();
-        $videos->name = $request->input('name');
-        $videos->description = $request->input('description');
-        $videos->language = $request->input('language');
-        $videos->video_url = $request->input('video_url');
-        if ($request->hasFile('video')) {
-            if ($request->file('video')->isValid()) {
-                $request->file('video')->move(base_path()."/storage/app/video/", $request->file('videos')->getFilename());
-            }
-        }
-        ($save) ? $videos->save() : null;
-        return $videos;
-    }
-
     public function show($id)
     {
-        $videos = Video::findOrFail($id);
-        return view('videos.show',compact('videos'));
+        $video = Video::findOrFail($id);
+        return view('videos.show',compact('video'));
     }
 
     /**
@@ -94,8 +99,8 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        $videos = Video::findOrFail($id);
-        return view('videos.edit',compact('videos'));
+        $video = Video::findOrFail($id);
+        return view('videos.edit',compact('video'));
     }
 
     /**
@@ -108,23 +113,16 @@ class VideoController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $videos = Video::findOrFail($id);
-            $this->silentSave($videos,$request);
+            $video = Video::findOrFail($id);
+            $this->silentSave($video,$request);
         } catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha actualizado el audio #'.$videos->id.' - '.$videos->name.' con éxito');
+        session()->flash('flash_message', 'Se ha actualizado el video #'.$video->id.' - '.$video->name.' con éxito');
         return redirect()->route('dashboard');
     }
-    public function search(Request $request)
-    {
-        $videos = Video::where('name','like','%'.$request->input('search').'%')
-            ->orWhere('id',$request->input('search'))
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-        return view('videos.index',compact('videos'));
-    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -133,9 +131,50 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        $videos = Video::findOrFail($id);
-        $videos->delete();
-        session()->flash('flash_message', 'Se ha eliminado el audio #'.$id.' con éxito');
-        return redirect()->route('videos.index');
+        $video = Video::findOrFail($id);
+        $video->delete();
+        session()->flash('flash_message', 'Se ha eliminado el video #'.$id.' con éxito');
+        return redirect()->route('video.index');
+    }
+
+    /**
+     * Returns an specific searched element
+     *
+     * @param $id
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
+    public function find($id)
+    {
+        $video = Video::findOrFail($id);
+        return view('videos.show',compact('video'));
+    }
+
+    /**
+     * Searches for an especific audio name
+     * @param Request $request
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
+    public function search(Request $request)
+    {
+        $videos = Video::where('name','like','%'.$request->input('search').'%')
+            ->orWhere('id',$request->input('search'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('videos.index',compact('videos'));
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get($id)
+    {
+        try {
+            $video = Video::findOrFail($id);
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($video);
     }
 }

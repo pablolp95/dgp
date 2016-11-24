@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::model($audio, ["method" => "put", "route" => array("audio.update", $audio->id)]) !!}
+    {!! Form::model($audio, ["method" => "put", "enctype" => "multipart/form-data", "route" => array("audio.update", $audio->id)]) !!}
     @include("audio._model")
     {!! Form::close() !!}
     @include("audio._destroy")
