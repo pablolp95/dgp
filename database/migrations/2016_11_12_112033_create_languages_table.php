@@ -25,10 +25,14 @@ class CreateLanguagesTable extends Migration
         Schema::table('languages', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 

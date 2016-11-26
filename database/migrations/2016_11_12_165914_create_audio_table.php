@@ -32,16 +32,24 @@ class CreateAudioTable extends Migration
         Schema::table('audio', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('stand_id')
                 ->references('id')
-                ->on('stands');
+                ->on('stands')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('language_id')
                 ->references('id')
-                ->on('languages');
+                ->on('languages')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 

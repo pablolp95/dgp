@@ -27,16 +27,24 @@ class CreateStandsTable extends Migration
         Schema::table('stands', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('zone_id')
                 ->references('id')
-                ->on('zones');
+                ->on('zones')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->foreign('route_id')
                 ->references('id')
-                ->on('routes');
+                ->on('routes')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 
