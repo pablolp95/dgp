@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Stand;
 use App\Audio;
 use Auth;
-
+use Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StandController extends Controller
 {
@@ -20,7 +22,7 @@ class StandController extends Controller
      */
     public function index()
     {
-        $stands=Stand::orderBy('created_at', 'desc')->paginate(15);
+        $stands = Stand::orderBy('created_at', 'desc')->paginate(15);
         return view('stands.index',compact('stands'));
     }
 
@@ -42,7 +44,33 @@ class StandController extends Controller
      */
     public function store(Request $request)
     {
+        try{
+            $stand = new Stand();
+            $stand->user_id = Auth::id();
+            $this->silentSave($stand,$request);
+        } catch (ModelNotFoundException $e) {
+            session()->flash('flash_message', 'Ha habido un error');
+        }
 
+        session()->flash('flash_message', 'Se ha creado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
+        return redirect()->route('stand.index');
+    }
+
+    /**
+     * Basic save operation used for update & store.
+     *
+     * @param $stand
+     * @param Request $request
+     * @param bool $save
+     * @return mixed
+     */
+    public function silentSave(&$stand, Request $request, $save = true)
+    {
+        $stand->last_update_user_id = Auth::id();
+        $stand->name = $request->input('name');
+
+        ($save) ? $stand->save() : null;
+        return $stand;
     }
 
     /**
@@ -53,7 +81,7 @@ class StandController extends Controller
      */
     public function show($id)
     {
-        $stand=Stand::findOrFail($id);
+        $stand = Stand::findOrFail($id);
         return view('stands.show',compact('stand'));
     }
 
@@ -65,7 +93,7 @@ class StandController extends Controller
      */
     public function edit($id)
     {
-        $stand=Stand::findOrFail($id);
+        $stand = Stand::findOrFail($id);
         return view('stands.edit',compact('stand'));
     }
 
@@ -78,9 +106,23 @@ class StandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $stand = Stand::findOrFail($id);
+            $this->silentSave($stand,$request);
+        } catch (ModelNotFoundException $e) {
+            session()->flash('flash_message', 'Ha habido un error');
+        }
+
+        session()->flash('flash_message', 'Se ha actualizado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
+        return redirect()->route('dashboard');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $stand = Stand::findOrFail($id);
@@ -88,14 +130,48 @@ class StandController extends Controller
         session()->flash('flash_message', 'Se ha eliminado el stand'.$id.' con éxito');
         return redirect()->route('zone.index');
     }
+
+    /**
+     * Returns an specific searched element
+     *
+     * @param $id
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
+    public function find($id)
+    {
+        $stand = Stand::findOrFail($id);
+        return view('stand.show',compact('stand'));
+    }
+
+    /**
+     * Searches for an especific stand name
+     * @param Request $request
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
+    public function search(Request $request)
+    {
+        $stands = Stand::where('name','like','%'.$request->input('search').'%')
+            ->orWhere('id',$request->input('search'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('stand.index',compact('stands'));
+    }
+
+    /**
+     * Display the view to associate an audio to an specific stand.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function associateAudio($id){
         return view("stands.associate_audio", compact("id"));
     }
+
     public function addAudio(Request $request,$id){
         try{
-            $stand=Stand::findOrFail($id);
-            $audio=Audio::findOrFail($request->input('audio_id'));
-            $stand->last_update_user_id=Auth::id();
+            $stand = Stand::findOrFail($id);
+            $audio = Audio::findOrFail($request->input('audio_id'));
+            $stand->last_update_user_id = Auth::id();
             $stand->audio()->save($audio);
 
         }catch (ModelNotFoundException $e) {
@@ -105,15 +181,23 @@ class StandController extends Controller
         return redirect()->route("stand.associate.audio", ["id" => $id]);
 
     }
+
+    /**
+     * Display the view to associate a video to an specific stand.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function associateVideo($id){
         return view("stands.associate_video", compact("id"));
     }
+
     public function addvideo(Request $request,$id){
         try{
-            $stand=Stand::findOrFail($id);
-            $video=video::findOrFail($request->input('video_id'));
-            $stand->last_update_user_id=Auth::id();
-            $stand->video()->save($video);
+            $stand = Stand::findOrFail($id);
+            $video = Video::findOrFail($request->input('video_id'));
+            $stand->last_update_user_id = Auth::id();
+            $stand->videos()->save($video);
 
         }catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
@@ -122,10 +206,4 @@ class StandController extends Controller
         return redirect()->route("stand.associate.video", ["id" => $id]);
 
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 }

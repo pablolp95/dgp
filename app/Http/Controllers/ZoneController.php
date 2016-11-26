@@ -45,27 +45,37 @@ class ZoneController extends Controller
     public function store(Request $request)
     {
         try{
-            $zona=new Zone();
-            $zona->user_id=Auth::id();
-            $this->silentSave($zona,$request);
+            $zone = new Zone();
+            $zone->user_id = Auth::id();
+            $this->silentSave($zone,$request);
 
         }catch (ModelNotFoundException $e){
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha creado la zona '.$zona->name.' con éxito');
+        session()->flash('flash_message', 'Se ha creado la zona '.$zone->name.' con éxito');
         return redirect()->route('zone.index');
     }
-    public function silentSave(&$zona, Request $request, $save = true){
-        $zona->name=$request->input('name');
-        $zona->description= $request->input('description');
-        $zona->last_update_user_id= Auth::id();
-        $zona->thematic= $request->input('thematic');
-        $zona->floor= $request->input('floor');
 
-        ($save) ? $zona->save() : null;
-        return $zona;
+    /**
+     * Basic save operation used for update & store.
+     *
+     * @param $zone
+     * @param Request $request
+     * @param bool $save
+     * @return mixed
+     */
+    public function silentSave(&$zone, Request $request, $save = true){
+        $zone->name = $request->input('name');
+        $zone->description = $request->input('description');
+        $zone->last_update_user_id = Auth::id();
+        $zone->thematic = $request->input('thematic');
+        $zone->floor = $request->input('floor');
+
+        ($save) ? $zone->save() : null;
+        return $zone;
     }
+
     /**
      * Display the specified resource.
      *
@@ -98,23 +108,6 @@ class ZoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function associateStand($id){
-        return view("zones.associate_stand", compact("id"));
-    }
-    public function addStand(Request $request,$id){
-        try{
-            $zone=Zone::findOrFail($id);
-            $stand=Stand::findOrFail($request->input('stand_id'));
-            $zone->last_update_user_id=Auth::id();
-            $zone->stands()->save($stand);
-
-        }catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
-        }
-        session()->flash('flash_message', 'Se ha asociado el stand #' . $request->input("stand_id") . ' a la zona #' . $zone->id . ' - ' . $zone->name . ' con éxito');
-        return redirect()->route("zone.associate.stand", ["id" => $id]);
-
-    }
     public function update(Request $request, $id)
     {
         try{
@@ -124,7 +117,7 @@ class ZoneController extends Controller
             session()->flash('flash_message', 'Ha habido un error');
         }
 
-        session()->flash('flash_message', 'Se ha actualizado el audio #'.$zone->id.' - '.$zone->name.' con éxito');
+        session()->flash('flash_message', 'Se ha actualizado la zona #'.$zone->id.' - '.$zone->name.' con éxito');
         return redirect()->route('dashboard');
     }
 
@@ -141,12 +134,56 @@ class ZoneController extends Controller
         session()->flash('flash_message', 'Se ha eliminado la zona '.$id.' con éxito');
         return redirect()->route('zone.index');
     }
+
+    /**
+     * Returns an specific searched element
+     *
+     * @param $id
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
+    public function find($id)
+    {
+        $zone = Zone::findOrFail($id);
+        return view('zone.show',compact('zone'));
+    }
+
+    /**
+     * Searches for an especific zone name
+     * @param Request $request
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
     public function search(Request $request)
     {
         $zones = Zone::where('name','like','%'.$request->input('search').'%')
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('zones.index',compact('zones'));
+        return view('zone.index',compact('zones'));
     }
+
+    /**
+     * Display the view to associate an stand to an specific zone.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function associateStand($id){
+        return view("zones.associate_stand", compact("id"));
+    }
+
+    public function addStand(Request $request,$id){
+        try{
+            $zone = Zone::findOrFail($id);
+            $stand = Stand::findOrFail($request->input('stand_id'));
+            $zone->last_update_user_id = Auth::id();
+            $zone->stands()->save($stand);
+
+        }catch (ModelNotFoundException $e) {
+            session()->flash('flash_message', 'Ha habido un error');
+        }
+        session()->flash('flash_message', 'Se ha asociado el stand #' . $request->input("stand_id") . ' a la zona #' . $zone->id . ' - ' . $zone->name . ' con éxito');
+        return redirect()->route("zone.associate.stand", ["id" => $id]);
+
+    }
+
 }
