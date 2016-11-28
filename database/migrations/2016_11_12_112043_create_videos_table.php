@@ -25,25 +25,23 @@ class CreateVideosTable extends Migration
             $table->string('filename')->nullable();
             $table->string('original_filename')->nullable();
             $table->text('description')->nullable();
-            $table->string('video_url')->nullable();
         });
 
         Schema::table('videos', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+            
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+            
             $table->foreign('stand_id')
                 ->references('id')
                 ->on('stands')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
+            
             $table->foreign('language_id')
                 ->references('id')
                 ->on('languages')

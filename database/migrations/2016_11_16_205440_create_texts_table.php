@@ -21,7 +21,6 @@ class CreateTextsTable extends Migration
             $table->integer('stand_id')->index()->unsigned()->nullable();
             $table->integer('language_id')->index()->unsigned()->nullable();
 
-            $table->string('name');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
         });
@@ -29,19 +28,18 @@ class CreateTextsTable extends Migration
         Schema::table('texts', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+
             $table->foreign('stand_id')
                 ->references('id')
                 ->on('stands')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreign('language_id')
                 ->references('id')
                 ->on('languages')

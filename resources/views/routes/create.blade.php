@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::open(["method" => "post", "enctype" => "multipart/form-data","route" => "route.store"]) !!}
+    {!! Form::open(["method" => "post", "route" => "route.store"]) !!}
     @include("routes._model")
     {!! Form::close() !!}
 @endsection

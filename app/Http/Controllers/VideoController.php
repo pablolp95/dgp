@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Video;
+use App\Language;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,7 +23,7 @@ class VideoController extends Controller
     public function index()
     {
         $videos = Video::orderBy('created_at', 'desc')->paginate(15);
-        return view('videos.index',compact('videos'));
+        return view('videos.index', compact('videos'));
     }
 
     /**
@@ -32,7 +33,14 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('videos.create');
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+
+        return view('videos.create', compact('languages'));
     }
 
     /**
@@ -67,12 +75,11 @@ class VideoController extends Controller
         $video->last_update_user_id = Auth::id();
         $video->name = $request->input('name');
         $video->description = $request->input('description');
-        $video->language_id = null;
-        $video->video_url = null;
+        $video->language_id = $request->input('language_id');
 
         if ($request->hasFile('video')) {
             if ($request->file('video')->isValid()) {
-                $request->file('video')->move(base_path()."/storage/app/video/", $request->file('video')->getFilename());
+                $request->file('video')->move(base_path()."/storage/app/videos/", $request->file('video')->getFilename());
             }
         }
         ($save) ? $video->save() : null;
@@ -100,7 +107,14 @@ class VideoController extends Controller
     public function edit($id)
     {
         $video = Video::findOrFail($id);
-        return view('videos.edit',compact('video'));
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+
+        return view('videos.edit',compact('video', 'languages'));
     }
 
     /**

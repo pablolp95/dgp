@@ -19,20 +19,18 @@ class CreateLanguagesTable extends Migration
             $table->integer('user_id')->index()->unsigned();
             $table->integer('last_update_user_id')->index()->unsigned()->nullable();
 
-            $table->string('language');
+            $table->string('language_code', 2)->index()->unique();
+            $table->string('language', 32)->index()->unique();
         });
 
         Schema::table('languages', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+            
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
         });
     }
 

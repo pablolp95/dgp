@@ -27,14 +27,11 @@ class CreateRoutesTable extends Migration
         Schema::table('routes', function(Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
+            
             $table->foreign('last_update_user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->on('users');
         });
     }
 

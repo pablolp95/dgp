@@ -3,7 +3,10 @@
  */
 $(document).ready(function() {
     $('select').material_select();
+    $('ul.tabs').tabs();
+    $('.modal').modal();
 });
+
 function initClientValidation() {
     $("form").materialid({
         fields: {

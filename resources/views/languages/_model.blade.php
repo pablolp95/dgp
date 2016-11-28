@@ -2,8 +2,8 @@
 
     <!-- Language field -->
     <div class="input-field col s12 m6">
-        {!! Form::select("name", ['Español', 'English', 'Alemán'], null, ["id" => "name","class" => "validate"]) !!}
-        {!! Form::label("name", "Idioma:*") !!}
+        {!! Form::select("language_code", App\Language::$languages, null, ["id" => "language_code","class" => "validate"]) !!}
+        {!! Form::label("language", "Idioma:*") !!}
     </div>
     
     <div class="col s12">

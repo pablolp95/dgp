@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Audio;
+use App\Language;
 use Auth;
 use Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -22,7 +24,7 @@ class AudioController extends Controller
     public function index()
     {
         $audios = Audio::orderBy('created_at', 'desc')->paginate(15);
-        return view('audio.index',compact('audios'));
+        return view('audio.index', compact('audios'));
     }
 
     /**
@@ -32,7 +34,14 @@ class AudioController extends Controller
      */
     public function create()
     {
-        return view('audio.create');
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+        
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+
+        return view('audio.create', compact('languages'));
     }
 
     /**
@@ -68,8 +77,7 @@ class AudioController extends Controller
         $audio->last_update_user_id = Auth::id();
         $audio->name = $request->input('name');
         $audio->description = $request->input('description');
-        $audio->language_id = null;
-        $audio->audio_url = null;
+        $audio->language_id = $request->input('language_id');
 
         if ($request->hasFile('audio')) {
             if ($request->file('audio')->isValid()) {
@@ -78,7 +86,7 @@ class AudioController extends Controller
                 $audio->mime = $request->file('audio')->getClientMimeType();
                 $audio->original_filename = $request->file('audio')->getClientOriginalName();
                 $audio->filename = $request->file('audio')->getFilename().'.'.$extension;
-                $request->file('audio')->move(base_path()."/storage/app/audio/", $request->file('audio')->getFilename().'.'.$extension);
+                $request->file('audio')->move(base_path().'/storage/app/audio/', $request->file('audio')->getFilename().'.'.$extension);
             }
         }
         ($save) ? $audio->save() : null;
@@ -106,7 +114,14 @@ class AudioController extends Controller
     public function edit($id)
     {
         $audio = Audio::findOrFail($id);
-        return view('audio.edit',compact('audio'));
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+
+        return view('audio.edit',compact('audio','languages'));
     }
 
     /**
@@ -138,6 +153,7 @@ class AudioController extends Controller
     public function destroy($id)
     {
         $audio = Audio::findOrFail($id);
+        Storage::delete(base_path().'/storage/app/audio/'.$audio->filename);
         $audio->delete();
         session()->flash('flash_message', 'Se ha eliminado el audio #'.$id.' con éxito');
         return redirect()->route('audio.index');

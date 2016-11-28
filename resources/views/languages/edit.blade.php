@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::model($language, ["method" => "put", "enctype" => "multipart/form-data", "route" => array("language.update", $language->id)]) !!}
+    {!! Form::model($language, ["method" => "put", "route" => array("language.update", $language->id)]) !!}
     @include("languages._model")
     {!! Form::close() !!}
     @include("languages._destroy")

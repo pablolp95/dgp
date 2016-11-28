@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::open(["method" => "post", "enctype" => "multipart/form-data","route" => "language.store"]) !!}
+    {!! Form::open(["method" => "post","route" => "language.store"]) !!}
     @include("languages._model")
     {!! Form::close() !!}
 @endsection

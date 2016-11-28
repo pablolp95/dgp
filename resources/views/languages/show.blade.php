@@ -24,6 +24,7 @@
     <div class="row">
         <div class="col s12">
             <p><strong>Idioma:</strong> {{ $language->language }}</p>
+            <p><strong>Código de idioma:</strong> {{ $language->language_code }}</p>
         </div>
     </div>
 @endsection

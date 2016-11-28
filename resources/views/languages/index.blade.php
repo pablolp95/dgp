@@ -26,6 +26,7 @@
     <tr>
         <th>ID</th>
         <th>Idioma</th>
+        <th>Código de idioma</th>
         <th class="center-align">Acciones</th>
     </tr>
     </thead>
@@ -34,9 +35,10 @@
         <tr>
             <td>{{ $language->id }}</td>
             <td>{{ $language->language }}</td>
+            <td>{{ $language->language_code }}</td>
             <td class="center-align">
-                <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('language.edit', ['id' => $language->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar language"><i class="material-icons">create</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('language.show', ['id' => $language->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar language"><i class="material-icons">visibility</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('language.edit', ['id' => $language->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar idioma"><i class="material-icons">create</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('language.show', ['id' => $language->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar idioma"><i class="material-icons">visibility</i></a>
             </td>
         </tr>
     @endforeach

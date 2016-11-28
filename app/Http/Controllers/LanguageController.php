@@ -22,7 +22,7 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = Language::orderBy('created_at', 'desc')->paginate(15);
-        return view('languages.index',compact('languages'));
+        return view('languages.index', compact('languages'));
     }
 
     /**
@@ -52,7 +52,7 @@ class LanguageController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha añadido el idioma #'.$language->id.' - '.$language->language.' con éxito');
-        return redirect()->route('languages.index');
+        return redirect()->route('language.index');
     }
 
     /**
@@ -66,7 +66,8 @@ class LanguageController extends Controller
     public function silentSave(&$language, Request $request, $save = true)
     {
         $language->last_update_user_id = Auth::id();
-        $language->language = $request->input('language');
+        $language->language_code = $request->input('language_code');
+        $language->language = Language::$languages[$language->language_code];
 
         ($save) ? $language->save() : null;
         return $language;
@@ -113,7 +114,7 @@ class LanguageController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el idioma #'.$language->id.' - '.$language->language.' con éxito');
-        return redirect()->route('languages.index');
+        return redirect()->route('language.index');
     }
 
     /**
@@ -127,7 +128,7 @@ class LanguageController extends Controller
         $language = Language::findOrFail($id);
         $language->delete();
         session()->flash('flash_message', 'Se ha eliminado el idioma #'.$id.' con éxito');
-        return redirect()->route('languages.index');
+        return redirect()->route('language.index');
     }
 
     /**
@@ -139,7 +140,7 @@ class LanguageController extends Controller
     public function find($id)
     {
         $language = Language::findOrFail($id);
-        return view('languages.show',compact('language'));
+        return view('languages.show', compact('language'));
     }
 
     /**
@@ -153,7 +154,7 @@ class LanguageController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('languages.index',compact('languages'));
+        return view('languages.index', compact('languages'));
     }
 
     /**

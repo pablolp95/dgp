@@ -71,7 +71,7 @@ class ImageController extends Controller
         $image->image_url = $request->input('image_url');
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
-                $request->file('image')->move(base_path()."/storage/app/image/", $request->file('image')->getFilename());
+                $request->file('image')->move(base_path()."/storage/app/images/", $request->file('image')->getFilename());
             }
         }
         ($save) ? $image->save() : null;
