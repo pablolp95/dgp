@@ -24,6 +24,7 @@ class CreateImagesTable extends Migration
             $table->string('filename')->nullable();
             $table->string('original_filename')->nullable();
             $table->text('description')->nullable();
+            $table->string('mime')->nullable();
         });
 
         Schema::table('images', function(Blueprint $table) {

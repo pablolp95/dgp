@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Video;
 use App\Language;
+use App\Helpers\Stream;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -79,7 +80,11 @@ class VideoController extends Controller
 
         if ($request->hasFile('video')) {
             if ($request->file('video')->isValid()) {
-                $request->file('video')->move(base_path()."/storage/app/videos/", $request->file('video')->getFilename());
+                $extension = $request->file('video')->getClientOriginalExtension();
+                $video->mime = $request->file('video')->getClientMimeType();
+                $video->original_filename = $request->file('video')->getClientOriginalName();
+                $video->filename = $request->file('video')->getFilename().'.'.$extension;
+                $request->file('video')->move(base_path().'/storage/app/videos/', $request->file('video')->getFilename().'.'.$extension);
             }
         }
         ($save) ? $video->save() : null;
@@ -190,5 +195,24 @@ class VideoController extends Controller
         }
 
         return response()->json($video);
+    }
+    public function getFile($id)
+    {
+        try {
+            $video = Video::findOrFail($id);
+
+            $Dir = base_path('storage/app/videos');
+            if (file_exists($filePath = $Dir."/".$video->filename)) {
+                $stream = new Stream($filePath, $video->mime);
+                return response()->stream(function() use ($stream) {
+                    $stream->start();
+                });
+            }
+
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response("File doesn't exists", 404);
     }
 }

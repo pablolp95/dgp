@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Image;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -52,7 +53,7 @@ class ImageController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha creado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('images.index');
+        return redirect()->route('image.index');
     }
 
     /**
@@ -70,7 +71,11 @@ class ImageController extends Controller
         $image->description = $request->input('description');
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
-                $request->file('image')->move(base_path()."/storage/app/images/", $request->file('image')->getFilename());
+                $extension = $request->file('image')->getClientOriginalExtension();
+                $image->mime = $request->file('image')->getClientMimeType();
+                $image->original_filename = $request->file('image')->getClientOriginalName();
+                $image->filename = $request->file('image')->getFilename().'.'.$extension;
+                $request->file('image')->move(base_path().'/storage/app/images/', $request->file('image')->getFilename().'.'.$extension);
             }
         }
         ($save) ? $image->save() : null;
@@ -132,7 +137,7 @@ class ImageController extends Controller
         $image = Image::findOrFail($id);
         $image->delete();
         session()->flash('flash_message', 'Se ha eliminado la imagen #'.$id.' con éxito');
-        return redirect()->route('images.index');
+        return redirect()->route('image.index');
     }
 
     /**
@@ -169,11 +174,23 @@ class ImageController extends Controller
     public function get($id)
     {
         try {
-            $image = Video::findOrFail($id);
+            $image = Image::findOrFail($id);
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
 
         return response()->json($image);
+    }
+    public function getFile($id)
+    {
+        try {
+            $image = Image::findOrFail($id);
+            $file = Storage::get('/images/'.$image->filename);     //The filename is stored in a database.
+            return response($file, 200)->header('Content-Type', $image->mime);
+
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
     }
 }

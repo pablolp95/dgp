@@ -24,8 +24,19 @@
     <div class="row">
         <div class="col s12">
             <p><strong>Nombre:</strong> {{ $video->name }}</p>
-            <p><strong>URL del video:</strong> {{ $video->video_url }}</p>
             <p><strong>Descripción:</strong> {{ $video->filename }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m2">
+            <p><strong>Reproducir video:</strong></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m6 offset-l1">
+            <video controls Pause>
+                <source src="http://dgp.com/api/video/{{ $video->id }}/file" type="{{ $video->mime }}">
+            </video>
         </div>
     </div>
 @endsection

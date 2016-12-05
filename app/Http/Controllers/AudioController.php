@@ -82,7 +82,6 @@ class AudioController extends Controller
 
         if ($request->hasFile('audio')) {
             if ($request->file('audio')->isValid()) {
-                Log::info('Hay fichero');
                 $extension = $request->file('audio')->getClientOriginalExtension();
                 $audio->mime = $request->file('audio')->getClientMimeType();
                 $audio->original_filename = $request->file('audio')->getClientOriginalName();
