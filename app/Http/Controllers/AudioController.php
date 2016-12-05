@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Audio;
 use App\Language;
+use App\Helpers\Stream;
 use Auth;
 use Log;
 use Illuminate\Support\Facades\Storage;
@@ -209,10 +210,18 @@ class AudioController extends Controller
         try {
             $audio = Audio::findOrFail($id);
 
+            $Dir = base_path('storage/app/audio');
+            if (file_exists($filePath = $Dir."/".$audio->filename)) {
+                $stream = new Stream($filePath, $audio->mime);
+                return response()->stream(function() use ($stream) {
+                    $stream->start();
+                });
+            }
+
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
-
-        return response()->download(base_path()."/storage/app/audio/".$audio->filename, $audio->original_filename, ['Content-Type' => $audio->mime]);
+        
+        return response("File doesn't exists", 404);
     }
 }

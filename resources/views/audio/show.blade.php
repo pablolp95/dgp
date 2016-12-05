@@ -28,5 +28,9 @@
             <p><strong>URL de audio:</strong> {{ $audio->audio_url }}</p>
             <p><strong>Descripción:</strong> {{ $audio->description }}</p>
         </div>
+        <audio controls>
+            <source src="http://dgp.com/api/audio/{{ $audio->id }}/file" type="{{ $audio->mime }}">
+            Your browser does not support the audio element.
+        </audio>
     </div>
 @endsection

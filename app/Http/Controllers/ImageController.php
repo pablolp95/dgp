@@ -68,7 +68,6 @@ class ImageController extends Controller
         $image->last_update_user_id = Auth::id();
         $image->name = $request->input('name');
         $image->description = $request->input('description');
-        $image->image_url = $request->input('image_url');
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
                 $request->file('image')->move(base_path()."/storage/app/images/", $request->file('image')->getFilename());
