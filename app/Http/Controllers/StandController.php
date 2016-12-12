@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Stand;
 use App\Audio;
 use App\Language;
+use App\Text;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -76,7 +77,25 @@ class StandController extends Controller
         $stand->last_update_user_id = Auth::id();
         $stand->name = $request->input('name');
 
+        //Creo antes el stand para que se cree su id
         ($save) ? $stand->save() : null;
+
+        //Creo los textos asociados al stand en los distintos idiomas
+        $texts = $request->input('texts');
+        foreach($texts as $id_language => $stand_info){
+            $text = new Text();
+            $text->user_id = Auth::id();
+            $text->last_update_user_id = Auth::id();
+            $text->title = $stand_info["title"];
+            $text->description = $stand_info["description"];
+
+            $language = Language::findOrFail($id_language);
+            $language->texts()->save($text);
+            $stand->texts()->save($text);
+
+            ($save) ? $text->save() : null;
+        }
+
         return $stand;
     }
 
@@ -101,7 +120,13 @@ class StandController extends Controller
     public function edit($id)
     {
         $stand = Stand::findOrFail($id);
-        return view('stands.edit',compact('stand'));
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+        return view('stands.edit',compact('stand','languages'));
     }
 
     /**
@@ -135,7 +160,7 @@ class StandController extends Controller
         $stand = Stand::findOrFail($id);
         $stand->delete();
         session()->flash('flash_message', 'Se ha eliminado el stand'.$id.' con éxito');
-        return redirect()->route('zone.index');
+        return redirect()->route('stand.index');
     }
 
     /**
@@ -162,6 +187,21 @@ class StandController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         return view('stand.index',compact('stands'));
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get($id)
+    {
+        try {
+            $stand = Stand::findOrFail($id);
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($stand);
     }
 
     /**

@@ -21,6 +21,11 @@ class Stand extends Model
         return $this->hasMany('App\Video');
     }
 
+    public function texts()
+    {
+        return $this->hasMany('App\Text');
+    }
+
     public function zones()
     {
         return $this->belongsTo('App\Zone');
