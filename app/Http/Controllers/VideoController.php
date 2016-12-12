@@ -151,6 +151,7 @@ class VideoController extends Controller
     public function destroy($id)
     {
         $video = Video::findOrFail($id);
+        Storage::delete('/video/'.$video->filename);
         $video->delete();
         session()->flash('flash_message', 'Se ha eliminado el video #'.$id.' con éxito');
         return redirect()->route('video.index');

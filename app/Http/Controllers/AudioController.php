@@ -153,7 +153,7 @@ class AudioController extends Controller
     public function destroy($id)
     {
         $audio = Audio::findOrFail($id);
-        Storage::delete(base_path().'/storage/app/audio/'.$audio->filename);
+        Storage::delete('/audio/'.$audio->filename);
         $audio->delete();
         session()->flash('flash_message', 'Se ha eliminado el audio #'.$id.' con éxito');
         return redirect()->route('audio.index');

@@ -25,7 +25,8 @@
   "dependencies": {
     "Materialize": "materialize#~0.97.8",
     "materialid": "*",
-    "jquery.cookie": "~1.4.1"
+    "jquery.cookie": "~1.4.1",
+    "angular-material": "*"
   },
   "devDependencies": {
     "font-awesome": "~4.5.0",
