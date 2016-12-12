@@ -4,34 +4,37 @@
         {!! Form::text("name", null, ["id" => "name","class" => "validate"]) !!}
         {!! Form::label("name", "Nombre del stand:*") !!}
     </div>
-    <div class="input-field col s12 m6">
-        <!-- Modal Trigger -->
-        <a class="btn waves-effect waves-light right indigo" href="#modal1">Añadir idioma</a>
-
-        <!-- Modal Structure -->
-        <div id="modal1" class="modal">
-            <div class="modal-content">
-                <h4>Modal Header</h4>
-                <p>A bunch of text</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-            </div>
+    <div class="col s12 m6">
+        <!-- Language field -->
+        <div class="input-field col s6 m6">
+            {!! Form::select("language_id", $languages, null, ["id" => "language_id"]) !!}
+            {!! Form::label("language", "Idioma:*") !!}
         </div>
-
+        <!-- Add language Trigger -->
+        <div class="input-field col s6 m6">
+            <a class="btn waves-effect waves-light right indigo" href="#modal1">Añadir idioma</a>
+        </div>
     </div>
     <!-- Languages selected tabs -->
     <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s3 "><a href="#test1">Test 1</a></li>
-            <li class="tab col s3"><a class="active " href="#test2">Test 2</a></li>
-            <li class="tab col s3 "><a href="#test3">Test 3</a></li>
-            <li class="tab col s3"><a href="#test4">Test 4</a></li>
+        <ul class="tabs tabs-fixed-width">
+            <li class="tab"><a class="active" href="#1">Test 1</a></li>
+            <li class="tab"><a href="#test2">Test 2</a></li>
         </ul>
     </div>
     <!-- Text for selected language -->
-    <div class="col s12" id="texts">
-
+    <div id="texts">
+        <div class="col s12" id="1">
+            <div class="input-field col s12 m6">
+                {!! Form::text("title", null, ["id" => "title","class" => "validate"]) !!}
+                {!! Form::label("title", "Titulo del stand:*") !!}
+            </div>
+            <!-- Description field -->
+            <div class="input-field col s12">
+                {!! Form::textarea("description", null, ["id" => "description","class" => "materialize-textarea"]) !!}
+                {!! Form::label("description", "Descripción del stand:*") !!}
+            </div>
+        </div>
     </div>
 
     <div class="col s12">

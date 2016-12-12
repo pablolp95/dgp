@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Stand;
 use App\Audio;
+use App\Language;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,7 +34,13 @@ class StandController extends Controller
      */
     public function create()
     {
-        return view('stands.create');
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+        return view('stands.create', compact('languages'));
     }
 
     /**

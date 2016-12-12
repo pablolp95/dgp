@@ -7,6 +7,7 @@ $(document).ready(function() {
     $('.modal').modal();
 });
 
+/*
 function initClientValidation() {
     $("form").materialid({
         fields: {
@@ -300,7 +301,7 @@ $("#country").change(function() {
     "ES" == $(this).find(":selected").val() ? ($("#e_state").parent().parent().fadeIn(), $(this).parent().parent().addClass("m6")) : ($("#e_state").parent().parent().hide(), $(this).parent().parent().removeClass("m6"))
 }), $("#r_country").change(function() {
     "ES" == $(this).find(":selected").val() ? ($("#r_state").parent().parent().fadeIn(), $(this).parent().parent().addClass("m6")) : ($("#r_state").parent().parent().hide(), $(this).parent().parent().removeClass("m6"))
-});
+});*/
 
 
 //# sourceMappingURL=maps/ddsi.min.js.map

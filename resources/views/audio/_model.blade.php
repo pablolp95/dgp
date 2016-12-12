@@ -14,7 +14,7 @@
     <!-- Description field -->
     <div class="input-field col s12">
         {!! Form::textarea("description", null, ["id" => "description","class" => "materialize-textarea"]) !!}
-        {!! Form::label("description", "Descripción de producto") !!}
+        {!! Form::label("description", "Descripción del audio") !!}
     </div>
 
     <!-- Uploaf file -->
