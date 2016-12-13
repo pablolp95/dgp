@@ -172,3 +172,19 @@ a:hover {
 .tabs .tab a {
     color: #9e9e9e !important;
 }
+
+.row .col #languages {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    display:none;
+}
+
+#addTrigger {
+    margin-top: 20px;
+    margin-right: -10px;
+}
+
+#deleteTrigger {
+    margin-bottom: 10px;
+    margin-right: -10px;
+}

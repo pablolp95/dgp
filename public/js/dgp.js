@@ -3,9 +3,54 @@
  */
 $(document).ready(function() {
     $('select').material_select();
-    $('ul.tabs').tabs();
     $('.modal').modal();
 });
+
+$("#addTrigger").click(function(){
+    addTab();
+});
+
+$("#deleteTrigger").click(function(){
+    deleteTab();
+});
+
+function addTab(){
+    var selectValue = $( "#language_id" ).val();
+    // If tab doesn't  exist in the list
+    if($("#" + selectValue).length == 0) {
+        $("#languages").show();
+        //add new tab
+        var selectText = $( "#language_id option:selected" ).text();
+        var $tabs = $('#tabs');
+        var $delete = $("#deleteLanguage");
+        $tabs.children().removeAttr('style');
+
+        $tabs.append("<li class='tab'><a href='#"+selectValue+"'>"+selectText+"</a></li>");
+        $delete.before("<div id='"+selectValue+"'><div class='input-field'> <input id='title' class='validate' name='texts["+selectValue+"][title]' type='text'> <label for='title'>Título del stand:*</label> </div> <!-- Description field --> <div class='input-field'> <textarea id='description' class='materialize-textarea' name='texts["+selectValue+"][description]' cols='50' rows='10'></textarea> <label for='description'>Descripción del stand:*</label></div></div>");
+        // initalize tabs again, then select new tab
+        $tabs.tabs().tabs('select_tab', selectValue);
+    }
+}
+
+function deleteTab(){
+    //Obtain actual selected tab id
+    var a_href = $( "ul.tabs li.tab a.active" ).attr( 'href' );
+    var itemId = a_href.substring(1, a_href.length);
+    var tabs = $('#tabs');
+
+    //Remove tab
+    $("ul.tabs li.tab a.active" ).parent().remove();
+    //Remove content associate with the tab
+    $("#"+itemId+"" ).remove();
+    if($("ul.tabs li").length != 0){
+        var lastHref = $('ul.tabs li.tab').last().children().attr('href');
+        var lastId = lastHref.substring(1, lastHref.length);
+        tabs.tabs().tabs('select_tab', lastId);
+    }
+    else{
+        $("#languages").hide();
+    }
+}
 
 /*
 function initClientValidation() {

@@ -82,18 +82,20 @@ class StandController extends Controller
 
         //Creo los textos asociados al stand en los distintos idiomas
         $texts = $request->input('texts');
-        foreach($texts as $id_language => $stand_info){
-            $text = new Text();
-            $text->user_id = Auth::id();
-            $text->last_update_user_id = Auth::id();
-            $text->title = $stand_info["title"];
-            $text->description = $stand_info["description"];
+        if(isset($texts)){
+            foreach($texts as $id_language => $stand_info){
+                $text = new Text();
+                $text->user_id = Auth::id();
+                $text->last_update_user_id = Auth::id();
+                $text->title = $stand_info["title"];
+                $text->description = $stand_info["description"];
 
-            $language = Language::findOrFail($id_language);
-            $language->texts()->save($text);
-            $stand->texts()->save($text);
+                $language = Language::findOrFail($id_language);
+                $language->texts()->save($text);
+                $stand->texts()->save($text);
 
-            ($save) ? $text->save() : null;
+                ($save) ? $text->save() : null;
+            }
         }
 
         return $stand;
