@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col m6 offset-l1">
             <video controls Pause>
-                <source src="http://dgp.com/api/video/{{ $video->id }}/file" type="{{ $video->mime }}">
+                <source src="http://{{$_SERVER['HTTP_HOSTS']}}/api/video/{{ $video->id }}/file" type="{{ $video->mime }}">
             </video>
         </div>
     </div>

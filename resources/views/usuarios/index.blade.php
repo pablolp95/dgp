@@ -33,16 +33,22 @@
     </thead>
     <tbody>
     @foreach($usuarios as $usuario)
-        <tr>
-            <td>{{ $usuario->id }}</td>
-            <td>{{ $usuario->email }}</td>
-            <td>{{ $usuario->name }}</td>
-            <td>{{ $usuario->roles()->get()->first()->display_name }}</td>
-            <td class="center-align">
-                <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('usuario.edit', ['id' => $usuario->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar usuario"><i class="material-icons">create</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('usuario.show', ['id' => $usuario->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar usuario"><i class="material-icons">visibility</i></a>
-            </td>
-        </tr>
+        <?php $can_see = true; ?>
+        @if($usuario->roles()->get()->first()->name == 'superadmin' && !Entrust::hasRole('superadmin'))
+            <?php $can_see = false; ?>
+        @endif
+        @if($can_see)
+            <tr>
+                <td>{{ $usuario->id }}</td>
+                <td>{{ $usuario->email }}</td>
+                <td>{{ $usuario->name }}</td>
+                <td>{{ $usuario->roles()->get()->first()->display_name }}</td>
+                <td class="center-align">
+                    <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('usuario.edit', ['id' => $usuario->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar usuario"><i class="material-icons">create</i></a>
+                    <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('usuario.show', ['id' => $usuario->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar usuario"><i class="material-icons">visibility</i></a>
+                </td>
+            </tr>
+        @endif
     @endforeach
     </tbody>
 @endsection

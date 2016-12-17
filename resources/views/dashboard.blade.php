@@ -1,21 +1,21 @@
 <?php
 $dashboard_elems = [
-        route('stand.create') => ['deployment', 'Crear stand',['empleado','admin']],
-        route('stand.index') => ['add_database', 'Stands',['empleado','admin']],
-        route('zone.create') => ['shop', 'Crear zona',['empleado','admin']],
-        route('zone.index') => ['accept_database', 'Zonas',['empleado','admin']],
-        route('route.create') => ['opened_folder', 'Crear ruta', ['empleado','admin']],
-        route('route.index') => ['idea', 'Rutas', ['empleado','admin']],
-        route('image.create') => ['add_image', 'Añadir imágenes', ['empleado','admin']],
-        route('image.index') => ['image_file', 'Imágenes', ['empleado','admin']],
-        route('audio.create') => ['filing_cabinet', 'Añadir audio', ['empleado','admin']],
-        route('audio.index') => ['audio_file', 'Audios', ['empleado','admin']],
-        route('video.create') => ['money_transfer','Añadir vídeos',['empleado','admin']],
-        route('video.index') => ['video_file','Vídeos',['empleado','admin']],
-        route('language.create') => ['globe','Añadir idioma',['empleado','admin']],
-        route('language.index') => ['globe','Idiomas',['empleado','admin']],
-        route('usuario.create') => ['key', 'Crear usuario', ['admin']],
-        route('usuario.index') => ['address_book', 'Usuarios', ['admin']]
+        route('stand.create') => ['deployment', 'Crear stand',['empleado','admin','superadmin']],
+        route('stand.index') => ['add_database', 'Stands',['empleado','admin','superadmin']],
+        route('zone.create') => ['shop', 'Crear zona',['empleado','admin','superadmin']],
+        route('zone.index') => ['accept_database', 'Zonas',['empleado','admin','superadmin']],
+        route('route.create') => ['opened_folder', 'Crear ruta', ['empleado','admin','superadmin']],
+        route('route.index') => ['idea', 'Rutas', ['empleado','admin','superadmin']],
+        route('image.create') => ['add_image', 'Añadir imágenes', ['empleado','admin','superadmin']],
+        route('image.index') => ['image_file', 'Imágenes', ['empleado','admin','superadmin']],
+        route('audio.create') => ['filing_cabinet', 'Añadir audio', ['empleado','admin','superadmin']],
+        route('audio.index') => ['audio_file', 'Audios', ['empleado','admin','superadmin']],
+        route('video.create') => ['money_transfer','Añadir vídeos',['empleado','admin','superadmin']],
+        route('video.index') => ['video_file','Vídeos',['empleado','admin','superadmin']],
+        route('language.create') => ['globe','Añadir idioma',['empleado','admin','superadmin']],
+        route('language.index') => ['globe','Idiomas',['empleado','admin','superadmin']],
+        route('usuario.create') => ['key', 'Crear usuario', ['admin','superadmin']],
+        route('usuario.index') => ['address_book', 'Usuarios', ['admin','superadmin']]
 ];
 $i=1;
 ?>

@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Entrust::routeNeedsRole('dashboard*',['empleado','admin'],Redirect::to('/'),false);
+Entrust::routeNeedsRole('dashboard*',['empleado','admin','superadmin'],Redirect::to('/'),false);
 Route::get('dashboard', function()
 {
     $username = Auth::user()->name;
@@ -30,14 +30,14 @@ Route::post('password', ['as' => 'password.submit', 'uses' => 'Auth\PasswordCont
 Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
 Route::post('password/reset', ['as' => 'password.reset.submit', 'uses' => 'Auth\PasswordController@postReset']);
 
-Entrust::routeNeedsRole('stand*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('zone*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('route*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('audio*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('image*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('video*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('language*',['empleado','admin'],Redirect::to('dashboard'),false);
-Entrust::routeNeedsRole('usuario*',['admin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('stand*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('zone*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('route*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('audio*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('image*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('video*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('language*',['empleado','admin','superadmin'],Redirect::to('dashboard'),false);
+Entrust::routeNeedsRole('usuario*',['admin','superadmin'],Redirect::to('dashboard'),false);
 
 //API REST HTML
 Route::resource('stand','StandController');

@@ -34,9 +34,9 @@ class UsuarioController extends Controller
         $r = Role::all();
         $roles = [];
         foreach($r as $role) {
-            if($role["name"] == "admin" && Auth::user()->hasRole("admin")) {
+            if($role["name"] != "superadmin" && Auth::user()->hasRole("superadmin")) {
                 $roles[$role["name"]] = $role["display_name"];
-            } else if($role["name"] != "admin") {
+            } else if($role["name"] != "admin" && $role["name"] != "superadmin") {
                 $roles[$role["name"]] = $role["display_name"];
             }
         }
@@ -108,9 +108,9 @@ class UsuarioController extends Controller
         $r = Role::all();
         $roles = [];
         foreach($r as $role) {
-            if($role["name"] == "admin" && Auth::user()->hasRole("admin")) {
+            if($role["name"] != "superadmin" && Auth::user()->hasRole("superadmin")) {
                 $roles[$role["name"]] = $role["display_name"];
-            } else if($role["name"] != "admin") {
+            } else if($role["name"] != "admin" && $role["name"] != "superadmin") {
                 $roles[$role["name"]] = $role["display_name"];
             }
         }
@@ -134,7 +134,7 @@ class UsuarioController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el usuario #'.$usuario->id.' - '.$usuario->name.' con éxito');
-        return redirect()->route("dashboard");
+        return redirect()->route("usuario.index");
     }
 
     /**

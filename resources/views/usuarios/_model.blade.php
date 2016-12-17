@@ -37,11 +37,13 @@ if(isset($usuario)) {
         {!! Form::label("notes", "Notas:") !!}
     </div>
 
+    @if(((Entrust::hasRole('superadmin') && $current_role != 'superadmin')) || (Entrust::hasRole('admin') && $current_role != 'admin'))
     <!-- Role dropdown select -->
     <div class="col s12 m6">
         {!! Form::label("role", "Rol del usuario:") !!}
         {!! Form::select("role", $roles, $current_role, ["id" => "role"]) !!}
     </div>
+    @endif
     
     <div class="col s12">
         {!! Form::button("Guardar", ["type" => "submit", "class" => "btn waves-effect waves-light right indigo"]) !!}

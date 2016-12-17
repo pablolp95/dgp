@@ -12,7 +12,9 @@
     {!! Form::model($usuario, ["method" => "put", "route" => array("usuario.update",$usuario->id)]) !!}
     @include("usuarios._model")
     {!! Form::close() !!}
-    @include("usuarios._destroy")
+    @if(Entrust::user()->id != $usuario->id)
+        @include("usuarios._destroy")
+    @endif
 @endsection
 
 @section("scripts")

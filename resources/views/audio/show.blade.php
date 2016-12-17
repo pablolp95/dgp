@@ -34,7 +34,7 @@
     <div class="row">
         <div class="col m6 offset-l1">
             <audio controls>
-                <source src="http://dgp.com/api/audio/{{ $audio->id }}/file" type="{{ $audio->mime }}">
+                <source src="http://{{$_SERVER['HTTP_HOSTS']}}/api/audio/{{ $audio->id }}/file" type="{{ $audio->mime }}">
             </audio>
         </div>
     </div>
