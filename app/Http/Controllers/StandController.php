@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Stand;
 use App\Audio;
+use App\Video;
 use App\Language;
 use App\Text;
 use Auth;
@@ -128,7 +129,9 @@ class StandController extends Controller
         foreach ($available as $language){
             $languages[$language->id] = $language->language;
         }
-        return view('stands.edit',compact('stand','languages'));
+
+        $texts = $stand->texts;
+        return view('stands.edit',compact('stand','languages','texts'));
     }
 
     /**
@@ -192,6 +195,20 @@ class StandController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $stands = Stand::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($stands);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -204,6 +221,70 @@ class StandController extends Controller
         }
 
         return response()->json($stand);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getImages($id)
+    {
+        try {
+            $stand = Stand::findOrFail($id);
+            $images = $stand->images->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($images);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAudio($id)
+    {
+        try {
+            $stand = Stand::findOrFail($id);
+            $audio = $stand->audio->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($audio);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVideos($id)
+    {
+        try {
+            $stand = Stand::findOrFail($id);
+            $videos = $stand->videos->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($videos);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTexts($id)
+    {
+        try {
+            $stand = Stand::findOrFail($id);
+            $texts = $stand->texts->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($texts);
     }
 
     /**

@@ -12,7 +12,7 @@
         </div>
         <!-- Add language Trigger -->
         <div class="col s6 m6">
-            {!! Form::button("Añadir idioma", ["type" => "button", "class" => "btn waves-effect waves-light right indigo", "id" => "addTrigger"]) !!}
+            {!! Form::button("Añadir contenido", ["type" => "button", "class" => "btn waves-effect waves-light right indigo", "id" => "addTrigger"]) !!}
         </div>
     </div>
     <div class="col s12 z-depth-3" id="languages">
@@ -23,8 +23,8 @@
         </div>
         <!-- Text for selected language -->
         <div class="col s12" id="stand-texts">
-            <!-- Add language Trigger -->
             <div class="input-field col s6 m6 offset-m6 offset-s6" id="deleteLanguage">
+                <!-- Delete language Trigger -->
                 {!! Form::button("Eliminar idioma", ["type" => "button", "class" => "btn waves-effect waves-light right indigo", "id" => "deleteTrigger"]) !!}
             </div>
         </div>

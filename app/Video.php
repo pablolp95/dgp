@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
+    public static $modes = [
+        'hearing_loss' => 'Discapacidad auditiva',
+        'no_hearing_loss' => 'Sin discapacidad auditiva'
+    ];
+
     public function stand()
     {
         return $this->belongsTo('App\Stand');

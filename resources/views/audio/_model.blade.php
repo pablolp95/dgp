@@ -6,9 +6,15 @@
     </div>
 
     <!-- Language field -->
-    <div class="input-field col s12 m6">
+    <div class="input-field col s12 m3">
         {!! Form::select("language_id", $languages, null, ["id" => "language_id"]) !!}
         {!! Form::label("language", "Idioma:*") !!}
+    </div>
+
+    <!-- Mode field -->
+    <div class="input-field col s12 m3">
+        {!! Form::select("mode", App\Audio::$modes, null, ["id" => "mode"]) !!}
+        {!! Form::label("mode", "Modo audición:*") !!}
     </div>
 
     <!-- Description field -->

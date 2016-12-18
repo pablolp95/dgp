@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Audio extends Model
 {
+    public static $modes = [
+        'blind' => 'Discapacidad visual',
+        'no_blind' => 'Sin discapacidad visual'
+    ];
+
     public function stand()
     {
         return $this->belongsTo('App\Stand');

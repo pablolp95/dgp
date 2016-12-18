@@ -79,10 +79,11 @@ Route::get('api/stand/{id}',['as' => 'stand.get.json', 'uses' => 'StandControlle
 Route::get('api/stand/{id}/images',['as' => 'stand.get.json', 'uses' => 'StandController@getImages']);
 Route::get('api/stand/{id}/audio',['as' => 'stand.get.json', 'uses' => 'StandController@getAudio']);
 Route::get('api/stand/{id}/videos',['as' => 'stand.get.json', 'uses' => 'StandController@getVideos']);
+Route::get('api/stand/{id}/texts',['as' => 'stand.get.json', 'uses' => 'StandController@getTexts']);
 
 Route::get('api/zone',['as' => 'zone.get.json', 'uses' => 'ZoneController@getAll']);
 Route::get('api/zone/{id}',['as' => 'zone.get.json', 'uses' => 'ZoneController@get']);
-Route::get('api/zone/{id}/stands',['as' => 'stand.get.json', 'uses' => 'StandController@getStands']);
+Route::get('api/zone/{id}/stands',['as' => 'stand.get.json', 'uses' => 'ZoneController@getStands']);
 
 Route::get('api/route',['as' => 'route.get.json', 'uses' => 'RouteController@getAll']);
 Route::get('api/route/{id}',['as' => 'route.get.json', 'uses' => 'RouteController@get']);

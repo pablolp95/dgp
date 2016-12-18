@@ -79,6 +79,7 @@ class AudioController extends Controller
         $audio->name = $request->input('name');
         $audio->description = $request->input('description');
         $audio->language_id = $request->input('language_id');
+        $audio->mode = $request->input('mode');
 
         if ($request->hasFile('audio')) {
             if ($request->file('audio')->isValid()) {
@@ -141,7 +142,7 @@ class AudioController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el audio #'.$audio->id.' - '.$audio->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('audio.index');
     }
 
     /**
@@ -186,6 +187,20 @@ class AudioController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $audios = Audio::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($audios);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -209,8 +224,8 @@ class AudioController extends Controller
         try {
             $audio = Audio::findOrFail($id);
 
-            $Dir = base_path('storage/app/audio');
-            if (file_exists($filePath = $Dir."/".$audio->filename)) {
+            $dir = base_path('storage/app/audio');
+            if (file_exists($filePath = $dir."/".$audio->filename)) {
                 $stream = new Stream($filePath, $audio->mime);
                 return response()->stream(function() use ($stream) {
                     $stream->start();

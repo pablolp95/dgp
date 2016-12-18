@@ -6,18 +6,24 @@
     </div>
 
     <!-- Language field -->
-    <div class="input-field col s12 m6">
+    <div class="input-field col s12 m3">
         {!! Form::select("language_id", $languages, null, ["id" => "language_id"]) !!}
         {!! Form::label("language", "Idioma:*") !!}
+    </div>
+
+    <!-- Mode field -->
+    <div class="input-field col s12 m3">
+        {!! Form::select("mode", App\Video::$modes, null, ["id" => "mode"]) !!}
+        {!! Form::label("mode", "Modo visualización:*") !!}
     </div>
 
     <!-- Description field -->
     <div class="input-field col s12">
         {!! Form::textarea("description", null, ["id" => "description","class" => "materialize-textarea"]) !!}
-        {!! Form::label("description", "Descripción de producto") !!}
+        {!! Form::label("description", "Descripción del vídeo") !!}
     </div>
 
-    <!-- Uploaf file -->
+    <!-- Upload file -->
     <div class="file-field input-field col s12">
         <div class="btn indigo">
             <span>Seleccionar fichero</span>

@@ -77,6 +77,7 @@ class VideoController extends Controller
         $video->name = $request->input('name');
         $video->description = $request->input('description');
         $video->language_id = $request->input('language_id');
+        $video->mode = $request->input('mode');
 
         if ($request->hasFile('video')) {
             if ($request->file('video')->isValid()) {
@@ -139,7 +140,7 @@ class VideoController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el video #'.$video->id.' - '.$video->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('video.index');
     }
 
     /**
@@ -184,6 +185,20 @@ class VideoController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $videos = Video::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($videos);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -197,13 +212,14 @@ class VideoController extends Controller
 
         return response()->json($video);
     }
+
     public function getFile($id)
     {
         try {
             $video = Video::findOrFail($id);
 
-            $Dir = base_path('storage/app/videos');
-            if (file_exists($filePath = $Dir."/".$video->filename)) {
+            $dir = base_path('storage/app/videos');
+            if (file_exists($filePath = $dir."/".$video->filename)) {
                 $stream = new Stream($filePath, $video->mime);
                 return response()->stream(function() use ($stream) {
                     $stream->start();

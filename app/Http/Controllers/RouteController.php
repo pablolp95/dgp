@@ -163,6 +163,51 @@ class RouteController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $routes = Route::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($routes);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get($id)
+    {
+        try {
+            $route = Route::findOrFail($id);
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($route);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getStands($id)
+    {
+        try {
+            $route = Route::findOrFail($id);
+            $stands = $route->stands->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($stands);
+    }
+    
+    /**
      * Display the view to associate an stand to an specific zone.
      *
      * @param  int  $id

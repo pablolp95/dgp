@@ -158,6 +158,20 @@ class LanguageController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $languages = Language::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($languages);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

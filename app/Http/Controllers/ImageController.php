@@ -166,7 +166,21 @@ class ImageController extends Controller
             ->paginate(10);
         return view('images.index',compact('image'));
     }
-    
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $images = Image::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($images);
+    }
+
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -181,6 +195,7 @@ class ImageController extends Controller
 
         return response()->json($image);
     }
+
     public function getFile($id)
     {
         try {

@@ -110,7 +110,7 @@ class UsuarioController extends Controller
         foreach($r as $role) {
             if($role["name"] != "superadmin" && Auth::user()->hasRole("superadmin")) {
                 $roles[$role["name"]] = $role["display_name"];
-            } else if($role["name"] != "admin" && $role["name"] != "superadmin") {
+            } else if($role["name"] != "superadmin") {
                 $roles[$role["name"]] = $role["display_name"];
             }
         }

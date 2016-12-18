@@ -162,6 +162,51 @@ class ZoneController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAll()
+    {
+        try {
+            $zones = Zone::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($zones);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get($id)
+    {
+        try {
+            $zone = Zone::findOrFail($id);
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($zone);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getStands($id)
+    {
+        try {
+            $zone = Zone::findOrFail($id);
+            $stands = $zone->stands->toArray();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($stands);
+    }
+
+    /**
      * Display the view to associate an stand to an specific zone.
      *
      * @param  int  $id

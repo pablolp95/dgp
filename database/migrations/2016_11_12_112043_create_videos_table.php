@@ -26,6 +26,7 @@ class CreateVideosTable extends Migration
             $table->string('original_filename')->nullable();
             $table->text('description')->nullable();
             $table->string('mime')->nullable();
+            $table->string('mode', 36);
 
         });
 

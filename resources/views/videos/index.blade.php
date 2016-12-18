@@ -37,7 +37,7 @@
             <td>{{ $video->id }}</td>
             <td>{{ $video->name }}</td>
             <td class="truncate">{{ $video->description }}</td>
-            <td>{{ $video->language }}</td>
+            <td>{{ $video->language->language }}</td>
             <td class="center-align">
                 <a class="btn-floating btn-large waves-effect waves-light deep-orange tooltipped" href="{{ route('video.edit', ['id' => $video->id]) }}" data-position="top" data-delay="50" data-tooltip="Editar video"><i class="material-icons">create</i></a>
                 <a class="btn-floating btn-large waves-effect waves-light red tooltipped" href="{{ route('video.show', ['id' => $video->id]) }}" data-position="top" data-delay="50" data-tooltip="Mostrar video"><i class="material-icons">visibility</i></a>
