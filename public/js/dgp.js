@@ -22,11 +22,41 @@ function addTab(){
         //add new tab
         var selectText = $( "#language_id option:selected" ).text();
         var $tabs = $('#tabs');
-        var $delete = $("#deleteLanguage");
+        var $deleteButton = $("#deleteLanguage");
         $tabs.children().removeAttr('style');
 
         $tabs.append("<li class='tab'><a href='#"+selectValue+"'>"+selectText+"</a></li>");
-        $delete.before("<div id='"+selectValue+"'><div class='input-field'> <input id='title' class='validate' name='texts["+selectValue+"][title]' type='text'> <label for='title'>Título del stand:*</label> </div> <!-- Description field --> <div class='input-field'> <textarea id='description' class='materialize-textarea' name='texts["+selectValue+"][description]' cols='50' rows='10'></textarea> <label for='description'>Descripción del stand:*</label></div></div>");
+        $deleteButton.before(
+            "<div id='"+selectValue+"'>" +
+                "<div class='input-field'>" +
+                    "<input id='title' class='validate' name='texts["+selectValue+"][title]' type='text'>" +
+                    "<label for='title'>Título del stand:*</label>" +
+                "</div>" +
+                "<!-- Description field -->" +
+                "<div class='input-field'>" +
+                    "<textarea id='description' class='materialize-textarea' name='texts["+selectValue+"][description]' cols='50' rows='10'></textarea>" +
+                    "<label for='description'>Descripción del stand:*</label>" +
+                "</div>" +
+                "<h6 style='color:#9E9E9E'>Asociar vídeos</h6>"+
+                "<div id='video-list' class='col s12 no-padding'>"+
+                    "<ul class='collection with-header'>"+
+                        "<li id='add-video' class='collection-item'>Asociar un nuevo vídeo<a class='secondary-content'><i class='material-icons'>add</i></a></li>"+
+                    "</ul>"+
+                "</div>" +
+                "<h6 style='color:#9E9E9E'>Asociar audios</h6>"+
+                "<div id='audio-list' class='col s12 no-padding'>"+
+                    "<ul class='collection with-header'>"+
+                        "<li id='add-video' class='collection-item'>Asociar un nuevo audio<a class='secondary-content'><i class='material-icons'>add</i></a></li>"+
+                    "</ul>"+
+                "</div>" +
+                "<h6 style='color:#9E9E9E'>Asociar imágenes</h6>"+
+                "<div id='image-list' class='col s12 no-padding'>"+
+                    "<ul class='collection with-header'>"+
+                        "<li id='add-video' class='collection-item'>Asociar una nueva imagen<a class='secondary-content'><i class='material-icons'>add</i></a></li>"+
+                    "</ul>"+
+                "</div>" +
+            "</div>"
+        );
         // initalize tabs again, then select new tab
         $tabs.tabs().tabs('select_tab', selectValue);
     }
