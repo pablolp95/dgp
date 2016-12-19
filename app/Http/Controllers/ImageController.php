@@ -71,6 +71,9 @@ class ImageController extends Controller
         $image->description = $request->input('description');
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
+                if($image->filename != null){
+                    Storage::delete('/images/'.$image->filename);
+                }
                 $extension = $request->file('image')->getClientOriginalExtension();
                 $image->mime = $request->file('image')->getClientMimeType();
                 $image->original_filename = $request->file('image')->getClientOriginalName();
@@ -135,6 +138,9 @@ class ImageController extends Controller
     public function destroy($id)
     {
         $image = Image::findOrFail($id);
+        if($image->filename != null){
+            Storage::delete('/images/'.$image->filename);
+        }
         $image->delete();
         session()->flash('flash_message', 'Se ha eliminado la imagen #'.$id.' con éxito');
         return redirect()->route('image.index');

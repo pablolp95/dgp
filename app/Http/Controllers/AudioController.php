@@ -83,6 +83,9 @@ class AudioController extends Controller
 
         if ($request->hasFile('audio')) {
             if ($request->file('audio')->isValid()) {
+                if($audio->filename != null){
+                    Storage::delete('/audio/'.$audio->filename);
+                }
                 $extension = $request->file('audio')->getClientOriginalExtension();
                 $audio->mime = $request->file('audio')->getClientMimeType();
                 $audio->original_filename = $request->file('audio')->getClientOriginalName();
@@ -154,7 +157,9 @@ class AudioController extends Controller
     public function destroy($id)
     {
         $audio = Audio::findOrFail($id);
-        Storage::delete('/audio/'.$audio->filename);
+        if($audio->filename != null){
+            Storage::delete('/audio/'.$audio->filename);
+        }
         $audio->delete();
         session()->flash('flash_message', 'Se ha eliminado el audio #'.$id.' con éxito');
         return redirect()->route('audio.index');

@@ -81,6 +81,9 @@ class VideoController extends Controller
 
         if ($request->hasFile('video')) {
             if ($request->file('video')->isValid()) {
+                if($video->filename != null){
+                    Storage::delete('/videos/'.$video->filename);
+                }
                 $extension = $request->file('video')->getClientOriginalExtension();
                 $video->mime = $request->file('video')->getClientMimeType();
                 $video->original_filename = $request->file('video')->getClientOriginalName();
@@ -152,7 +155,9 @@ class VideoController extends Controller
     public function destroy($id)
     {
         $video = Video::findOrFail($id);
-        Storage::delete('/video/'.$video->filename);
+        if($video->filename != null){
+            Storage::delete('/videos/'.$video->filename);
+        }
         $video->delete();
         session()->flash('flash_message', 'Se ha eliminado el video #'.$id.' con éxito');
         return redirect()->route('video.index');
