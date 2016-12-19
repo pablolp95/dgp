@@ -32,7 +32,6 @@
         </div>
     </div>
     <div class="visible-print text-center">
-        <a download="'QRStand'.{{$stand->id}}.'jpg'" href="data:image/png;base64" title="QrStand"><img alt="QrStand" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(400)->generate('http://172.20.91.228/api/stand/'.$stand->id)) !!} ">
-        </a>
-    </div>
+        {!! base64_encode(QrCode::format('png')->size(400)->generate('http://172.20.91.228/api/stand/'.$stand->id, '../QRs/Stand'.$stand->id.'.png'))!!}
+    </div> 
 @endsection

@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
-
+use App\Image;
 use App\Stand;
 use App\Audio;
 use App\Video;
@@ -231,7 +230,8 @@ class StandController extends Controller
     {
         try {
             $stand = Stand::findOrFail($id);
-            $images = $stand->images->toArray();
+                $images = $stand->images->toArray();
+
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
@@ -247,7 +247,23 @@ class StandController extends Controller
     {
         try {
             $stand = Stand::findOrFail($id);
-            $audio = $stand->audio->toArray();
+            if(isset($_GET['language']) && isset($_GET['mode']) ){
+                $audio= Audio::where('stand_id','=',$id)
+                    ->where('language_id','=',$_GET['language'])
+                    ->where('mode','like',$_GET['mode'])->get();
+
+            }
+            elseif(!isset($_GET['language']) && isset($_GET['mode'])){
+                $audio= Audio::where('stand_id','=',$id)
+                    ->where('mode','=',$_GET['mode'])->get();
+            }
+            elseif(isset($_GET['language']) && !isset($_GET['mode'])){
+                $audio= Audio::where('stand_id','=',$id)
+                    ->where('language_id','like',$_GET['language'])->get();
+            }
+            else{
+                $audio = $stand->audio->toArray();
+            }
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
@@ -263,7 +279,24 @@ class StandController extends Controller
     {
         try {
             $stand = Stand::findOrFail($id);
-            $videos = $stand->videos->toArray();
+            if(isset($_GET['language']) && isset($_GET['mode']) ){
+                $videos= Video::where('stand_id','=',$id)
+                    ->where('language_id','=',$_GET['language'])
+                    ->where('mode','like',$_GET['mode'])->get();
+
+            }
+            elseif(!isset($_GET['language']) && isset($_GET['mode'])){
+                $videos= Video::where('stand_id','=',$id)
+                    ->where('mode','=',$_GET['mode'])->get();
+            }
+            elseif(isset($_GET['language']) && !isset($_GET['mode'])){
+                $videos= Video::where('stand_id','=',$id)
+                    ->where('language_id','like',$_GET['language'])->get();
+            }
+            else{
+                $videos = $stand->videos->toArray();
+            }
+
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
@@ -279,7 +312,14 @@ class StandController extends Controller
     {
         try {
             $stand = Stand::findOrFail($id);
-            $texts = $stand->texts->toArray();
+            if(isset($_GET['language'])){
+                $texts= Text::where('stand_id','=',$id)
+                    ->where('language_id','=',$_GET['language'])->get();
+
+            }
+            else{
+                $texts = $stand->texts->toArray();
+            }
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
