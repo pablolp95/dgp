@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Validator;
 class AudioController extends Controller
 {
     /**
@@ -53,17 +53,29 @@ class AudioController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $audio = new Audio();
-            $audio->user_id = Auth::id();
-            $this->silentSave($audio,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required','audio' => 'required|mimes:mpga']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('audio.create')->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $audio = new Audio();
+                $audio->user_id = Auth::id();
+                $this->silentSave($audio, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha creado el audio #'.$audio->id.' - '.$audio->name.' con éxito');
-        return redirect()->route('audio.index');
-    }
+            session()->flash('flash_message', 'Se ha creado el audio #' . $audio->id . ' - ' . $audio->name . ' con éxito');
+            return redirect()->route('audio.index');
+        }
+        }
 
     /**
      * Basic save operation used for update & store.
@@ -137,15 +149,27 @@ class AudioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $audio = Audio::findOrFail($id);
-            $this->silentSave($audio,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required','audio' => 'mimes:mpga']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('audio.edit',['id'=>$id])->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $audio = Audio::findOrFail($id);
+                $this->silentSave($audio, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha actualizado el audio #'.$audio->id.' - '.$audio->name.' con éxito');
-        return redirect()->route('audio.index');
+            session()->flash('flash_message', 'Se ha actualizado el audio #' . $audio->id . ' - ' . $audio->name . ' con éxito');
+            return redirect()->route('audio.index');
+        }
     }
 
     /**

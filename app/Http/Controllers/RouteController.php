@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Validator;
 class RouteController extends Controller
 {
     /**
@@ -111,15 +111,29 @@ class RouteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $route = Route::findOrFail($id);
-            $this->silentSave($route,$request);
-        }catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $route = Route::findOrFail($id);
+        $validator=Validator::make($request->all(),['name'=> 'required|min:3|max:100','description' => 'required|min:2|max:500', 'floor'=>'required|numeric|min:0|max:5']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('routes.edit',['id'=>$id])->withErrors($validator)->withInput();;
         }
+        else {
 
-        session()->flash('flash_message', 'Se ha actualizado el audio '.$route->id.' - '.$route    ->name.' con éxito');
-        return redirect()->route('dashboard');
+            try {
+                $route = Route::findOrFail($id);
+                $this->silentSave($route, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
+
+            session()->flash('flash_message', 'Se ha actualizado el audio ' . $route->id . ' - ' . $route->name . ' con éxito');
+            return redirect()->route('dashboard');
+        }
     }
 
     /**

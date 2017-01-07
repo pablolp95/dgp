@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Image;
 use Illuminate\Support\Facades\Storage;
 use Auth;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Validator;
 class ImageController extends Controller
 {
     /**
@@ -44,16 +43,28 @@ class ImageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        try{
-            $image = new Image();
-            $image->user_id = Auth::id();
-            $this->silentSave($image,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required','image'=>'required|mimes:jpeg,bmp,png']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('image.create')->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $image = new Image();
+                $image->user_id = Auth::id();
+                $this->silentSave($image, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha creado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('image.index');
+            session()->flash('flash_message', 'Se ha creado la imagen #' . $image->id . ' - ' . $image->name . ' con éxito');
+            return redirect()->route('image.index');
+        }
     }
 
     /**
@@ -118,15 +129,27 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $image = Image::findOrFail($id);
-            $this->silentSave($image,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required','image'=>'mimes:jpeg,bmp,png']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('image.edit',['id'=>$id])->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $image = Image::findOrFail($id);
+                $this->silentSave($image, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha actualizado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('dashboard');
+            session()->flash('flash_message', 'Se ha actualizado la imagen #' . $image->id . ' - ' . $image->name . ' con éxito');
+            return redirect()->route('dashboard');
+        }
     }
 
     /**

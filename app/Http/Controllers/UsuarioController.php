@@ -6,10 +6,11 @@ use App\Role;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Http\Controllers\Controller;
 use Zizaco\Entrust\Entrust;
+use Validator;
+
 
 class UsuarioController extends Controller
 {
@@ -49,19 +50,32 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request  $request)
     {
-        try{
-            $usuario = new User();
-            $this->silentSave($usuario,$request);
-            $role = Role::where("name", $request->input("role"))->first();
-            $usuario->roles()->save($role);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required|max:255|min:2','email'=>'required|email','password' => 'required|min:3|max:20','status'=>'required'
+            //
+        ]);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
         }
+        else {
+            try {
+                $usuario = new User();
+                $this->silentSave($usuario, $request);
+                $role = Role::where("name", $request->input("role"))->first();
+                $usuario->roles()->save($role);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha creado el usuario #'.$usuario->id.' - '.$usuario->name.' con éxito');
-        return redirect()->route("usuario.index");
+            session()->flash('flash_message', 'Se ha creado el usuario #' . $usuario->id . ' - ' . $usuario->name . ' con éxito');
+            return redirect()->route("usuario.index");
+        }
     }
 
     /**
@@ -126,15 +140,29 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $usuario = User::findOrFail($id);
-            $this->silentSave($usuario,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required|max:255|min:2','email'=>'required|email','password' => 'required|min:3|max:20','status'=>'required'
+            //
+        ]);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route("usuario.edit",['id'=>$id])->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $usuario = User::findOrFail($id);
+                $this->silentSave($usuario, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha actualizado el usuario #'.$usuario->id.' - '.$usuario->name.' con éxito');
-        return redirect()->route("usuario.index");
+            session()->flash('flash_message', 'Se ha actualizado el usuario #' . $usuario->id . ' - ' . $usuario->name . ' con éxito');
+            return redirect()->route("usuario.index");
+        }
     }
 
     /**

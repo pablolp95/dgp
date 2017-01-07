@@ -9,10 +9,8 @@ use App\Text;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Validator;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StandController extends Controller
@@ -52,6 +50,18 @@ class StandController extends Controller
      */
     public function store(Request $request)
     {
+        $validator=Validator::make($request->all(),['name'=> 'required|min:3|max:100','title'=>'required|unique|min:3|max:255','description' => 'required|min:2|max:500']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','Stand not created because:'.$cadena);
+            return redirect()->route('stand.create')->withErrors($validator)->withInput();
+
+        }
+        else{
         try{
             $stand = new Stand();
             $stand->user_id = Auth::id();
@@ -62,7 +72,8 @@ class StandController extends Controller
 
         session()->flash('flash_message', 'Se ha creado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
         return redirect()->route('stand.index');
-    }
+        }
+        }
 
     /**
      * Basic save operation used for update & store.
@@ -142,16 +153,32 @@ class StandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $stand = Stand::findOrFail($id);
-            $this->silentSave($stand,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
-        }
 
-        session()->flash('flash_message', 'Se ha actualizado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
-        return redirect()->route('dashboard');
-    }
+        $validator=Validator::make($request->all(),['name'=> 'required|min:3|max:100']);
+
+        if($validator->fails()) {
+            $errors = $validator->errors();
+            $cadena = '';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena . $message . ' ';
+            }
+
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('stand.edit',['id'=>$id]    )->withErrors($validator)->withInput();
+
+        }
+        else {
+            try {
+                $stand = Stand::findOrFail($id);
+                $this->silentSave($stand, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
+
+            session()->flash('flash_message', 'Se ha actualizado el stand #' . $stand->id . ' - ' . $stand->name . ' con éxito');
+            return redirect()->route('dashboard');
+        }
+        }
 
     /**
      * Remove the specified resource from storage.

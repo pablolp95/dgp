@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Redirect;
 use App\Zone;
 use App\Stand;
 use Auth;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Validator;
+use App\Route;
 
 class ZoneController extends Controller
 {
@@ -44,18 +45,30 @@ class ZoneController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $zone = new Zone();
-            $zone->user_id = Auth::id();
-            $this->silentSave($zone,$request);
+         $validator=Validator::make($request->all(),['name'=>'required|min:2|max:255', 'description'=>'required|max:500','floor'=>'required|numeric' ,'thematic'=>'required|max:255']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('zone.create')->withErrors($validator)->withInput();
+                    }
+        else {
+            try {
+                $zone = new Zone();
+                $zone->user_id = Auth::id();
+                $this->silentSave($zone, $request);
 
-        }catch (ModelNotFoundException $e){
-            session()->flash('flash_message', 'Ha habido un error');
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
+
+            session()->flash('flash_message', 'Se ha creado la zona ' . $zone->name . ' con éxito');
+            return redirect()->route('zone.index');
         }
-
-        session()->flash('flash_message', 'Se ha creado la zona '.$zone->name.' con éxito');
-        return redirect()->route('zone.index');
-    }
+        }
 
     /**
      * Basic save operation used for update & store.
@@ -110,16 +123,28 @@ class ZoneController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $zone = Zone::findOrFail($id);
-            $this->silentSave($zone,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required|min:2|max:255', 'description'=>'required|max:500','floor'=>'required|numeric' ,'thematic'=>'required|max:255']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('zone.edit',['id'=>$id])->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $zone = Zone::findOrFail($id);
+                $this->silentSave($zone, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha actualizado la zona #'.$zone->id.' - '.$zone->name.' con éxito');
-        return redirect()->route('dashboard');
-    }
+            session()->flash('flash_message', 'Se ha actualizado la zona #' . $zone->id . ' - ' . $zone->name . ' con éxito');
+            return redirect()->route('dashboard');
+        }
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -216,7 +241,7 @@ class ZoneController extends Controller
         return view("zones.associate_stand", compact("id"));
     }
 
-    public function addStand(Request $request,$id){
+    public function addStand(ZonePostRequest $request,$id){
         try{
             $zone = Zone::findOrFail($id);
             $stand = Stand::findOrFail($request->input('stand_id'));

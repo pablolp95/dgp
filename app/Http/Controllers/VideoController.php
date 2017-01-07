@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Storage;
 use App\Video;
 use App\Language;
 use App\Helpers\Stream;
@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Validator;
 class VideoController extends Controller
 {
     /**
@@ -51,16 +51,28 @@ class VideoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        try{
-            $video = new Video();
-            $video->user_id = Auth::id();
-            $this->silentSave($video,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required', 'language_id'=>'required|numeric','mode'=>'required','video'=>'required|mimetypes:video/avi,video/mpeg,video/mp4']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena=    '';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('video.create')->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $video = new Video();
+                $video->user_id = Auth::id();
+                $this->silentSave($video, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha creado el video #'.$video->id.' - '.$video->name.' con éxito');
-        return redirect()->route('video.index');
+            session()->flash('flash_message', 'Se ha creado el video #' . $video->id . ' - ' . $video->name . ' con éxito');
+            return redirect()->route('video.index');
+        }
     }
 
     /**
@@ -135,15 +147,27 @@ class VideoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $video = Video::findOrFail($id);
-            $this->silentSave($video,$request);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
+        $validator=Validator::make($request->all(),['name'=>'required','description'=>'required', 'language_id'=>'required|numeric','mode'=>'required','video'=>'mimetypes:video/avi,video/mpeg,video/mp4']);
+        if($validator->fails()){
+            $errors=$validator->errors();
+            $cadena='';
+            foreach ($errors->all() as $message) {
+                $cadena = $cadena.$message.' ';
+            }
+            session()->flash('flash_message','ERROR:'.$cadena);
+            return redirect()->route('video.edit',['id'=>$id])->withErrors($validator)->withInput();
         }
+        else {
+            try {
+                $video = Video::findOrFail($id);
+                $this->silentSave($video, $request);
+            } catch (ModelNotFoundException $e) {
+                session()->flash('flash_message', 'Ha habido un error');
+            }
 
-        session()->flash('flash_message', 'Se ha actualizado el video #'.$video->id.' - '.$video->name.' con éxito');
-        return redirect()->route('video.index');
+            session()->flash('flash_message', 'Se ha actualizado el video #' . $video->id . ' - ' . $video->name . ' con éxito');
+            return redirect()->route('video.index');
+        }
     }
 
     /**
