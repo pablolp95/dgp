@@ -32,6 +32,6 @@
         </div>
     </div>
     <div class="visible-print text-center">
-        {!! base64_encode(QrCode::format('png')->size(400)->generate('http://172.20.91.228/api/stand/'.$stand->id, '../QRs/Stand'.$stand->id.'.png'))!!}
+        {!! base64_encode(QrCode::format('png')->size(400)->generate('http://'.$_SERVER['HTTP_HOST'].'/'.$stand->id, '../QRs/Stand'.$stand->id.'.png'))!!}
     </div> 
 @endsection

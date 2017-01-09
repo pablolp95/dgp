@@ -35,7 +35,7 @@
     </div>
     <div class="row">
         <div class="col m6 offset-l1">
-            <img src="http://dgp.com/api/image/{{ $image->id }}/file" style="height:50%; width: 50%">
+            <img src="http://{{$_SERVER['HTTP_HOST']}}/api/image/{{ $image->id }}/file" style="height:50%; width: 50%">
         </div>
     </div>
 @endsection
