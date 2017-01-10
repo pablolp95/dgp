@@ -50,18 +50,7 @@ class StandController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),['name'=> 'required|min:3|max:100','title'=>'required|unique|min:3|max:255','description' => 'required|min:2|max:500']);
-        if($validator->fails()){
-            $errors=$validator->errors();
-            $cadena='';
-            foreach ($errors->all() as $message) {
-                $cadena = $cadena.$message.' ';
-            }
-            session()->flash('flash_message','Stand not created because:'.$cadena);
-            return redirect()->route('stand.create')->withErrors($validator)->withInput();
 
-        }
-        else{
         try{
             $stand = new Stand();
             $stand->user_id = Auth::id();
@@ -72,7 +61,7 @@ class StandController extends Controller
 
         session()->flash('flash_message', 'Se ha creado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
         return redirect()->route('stand.index');
-        }
+
         }
 
     /**
@@ -154,20 +143,7 @@ class StandController extends Controller
     public function update(Request $request, $id)
     {
 
-        $validator=Validator::make($request->all(),['name'=> 'required|min:3|max:100']);
 
-        if($validator->fails()) {
-            $errors = $validator->errors();
-            $cadena = '';
-            foreach ($errors->all() as $message) {
-                $cadena = $cadena . $message . ' ';
-            }
-
-            session()->flash('flash_message','ERROR:'.$cadena);
-            return redirect()->route('stand.edit',['id'=>$id]    )->withErrors($validator)->withInput();
-
-        }
-        else {
             try {
                 $stand = Stand::findOrFail($id);
                 $this->silentSave($stand, $request);
@@ -177,7 +153,7 @@ class StandController extends Controller
 
             session()->flash('flash_message', 'Se ha actualizado el stand #' . $stand->id . ' - ' . $stand->name . ' con éxito');
             return redirect()->route('dashboard');
-        }
+
         }
 
     /**
