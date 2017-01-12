@@ -14,3 +14,9 @@
     {!! Form::close() !!}
     @include("routes._destroy")
 @endsection
+@section("scripts")
+    @parent
+    <script>
+        initRouteValidation()
+    </script>
+@endsection
