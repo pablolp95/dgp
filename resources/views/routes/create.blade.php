@@ -14,9 +14,7 @@
     {!! Form::close() !!}
 @endsection
 
-@section("scripts")
+{{--@section("scripts")
     @parent
-    <script>
-        initRouteValidation()
-    </script>
-@endsection
+    <script>initAudioValidation()</script>
+@endsection --}}

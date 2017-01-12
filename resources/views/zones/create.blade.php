@@ -13,10 +13,3 @@
     @include("zones._model")
     {!! Form::close() !!}
 @endsection
-
-@section("scripts")
-    @parent
-    <script>
-        initZoneValidation()
-    </script>
-@endsection
