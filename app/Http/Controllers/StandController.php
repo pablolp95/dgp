@@ -84,7 +84,11 @@ class StandController extends Controller
         $texts = $request->input('texts');
         if(isset($texts)){
             foreach($texts as $id_language => $stand_info){
-                $text = new Text();
+                $text = $stand->texts()->where('language_id', $id_language)->first();
+                if(is_null($text) || empty($text)){
+                    $text = new Text();
+                }
+
                 $text->user_id = Auth::id();
                 $text->last_update_user_id = Auth::id();
                 $text->title = $stand_info["title"];
@@ -93,11 +97,38 @@ class StandController extends Controller
                 $language = Language::findOrFail($id_language);
                 $language->texts()->save($text);
                 $stand->texts()->save($text);
-
-                ($save) ? $text->save() : null;
             }
         }
 
+        $videos = $request->input('videos');
+        if (isset($videos)){
+            $current_videos = $stand->videos;
+            foreach ($current_videos as $current_video){
+                if (array_has($videos, $current_video->id)){
+                    array_forget($videos, $current_video->id);
+                }
+                else {
+                    $current_video->stand_id = null;
+                    $current_video->save();
+                }
+            }
+
+            foreach ($videos as $video_id){
+                $video = Video::findOrFail($video_id);
+                $stand->last_update_user_id = Auth::id();
+                $stand->videos()->save($video);
+            }
+        }
+
+        $audio = $request->input('audio');
+        if (isset($audio)){
+            foreach ($audio as $audio_id){
+                $audio = Audio::findOrFail($audio_id);
+                $stand->last_update_user_id = Auth::id();
+                $stand->audio()->save($audio);
+            }
+        }
+        
         return $stand;
     }
 
@@ -130,7 +161,10 @@ class StandController extends Controller
         }
 
         $texts = $stand->texts;
-        return view('stands.edit',compact('stand','languages','texts'));
+        $videos = $stand->videos;
+        $audio = $stand->audio;
+
+        return view('stands.edit',compact('stand','languages','texts', 'videos', 'audio'));
     }
 
     /**
@@ -150,7 +184,7 @@ class StandController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el stand #'.$stand->id.' - '.$stand->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('stand.index');
     }
 
     /**
@@ -248,17 +282,17 @@ class StandController extends Controller
         try {
             $stand = Stand::findOrFail($id);
             if(isset($_GET['language']) && isset($_GET['mode']) ){
-                $audio= Audio::where('stand_id','=',$id)
+                $audio = Audio::where('stand_id','=',$id)
                     ->where('language_id','=',$_GET['language'])
                     ->where('mode','like',$_GET['mode'])->get();
 
             }
             elseif(!isset($_GET['language']) && isset($_GET['mode'])){
-                $audio= Audio::where('stand_id','=',$id)
+                $audio = Audio::where('stand_id','=',$id)
                     ->where('mode','=',$_GET['mode'])->get();
             }
             elseif(isset($_GET['language']) && !isset($_GET['mode'])){
-                $audio= Audio::where('stand_id','=',$id)
+                $audio = Audio::where('stand_id','=',$id)
                     ->where('language_id','like',$_GET['language'])->get();
             }
             else{
@@ -280,17 +314,17 @@ class StandController extends Controller
         try {
             $stand = Stand::findOrFail($id);
             if(isset($_GET['language']) && isset($_GET['mode']) ){
-                $videos= Video::where('stand_id','=',$id)
+                $videos = Video::where('stand_id','=',$id)
                     ->where('language_id','=',$_GET['language'])
                     ->where('mode','like',$_GET['mode'])->get();
 
             }
             elseif(!isset($_GET['language']) && isset($_GET['mode'])){
-                $videos= Video::where('stand_id','=',$id)
+                $videos = Video::where('stand_id','=',$id)
                     ->where('mode','=',$_GET['mode'])->get();
             }
             elseif(isset($_GET['language']) && !isset($_GET['mode'])){
-                $videos= Video::where('stand_id','=',$id)
+                $videos = Video::where('stand_id','=',$id)
                     ->where('language_id','like',$_GET['language'])->get();
             }
             else{
@@ -313,7 +347,7 @@ class StandController extends Controller
         try {
             $stand = Stand::findOrFail($id);
             if(isset($_GET['language'])){
-                $texts= Text::where('stand_id','=',$id)
+                $texts = Text::where('stand_id','=',$id)
                     ->where('language_id','=',$_GET['language'])->get();
 
             }

@@ -204,6 +204,26 @@ class VideoController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailable()
+    {
+        try {
+            if(isset($_GET['language'])) {
+                $videos = Video::whereNull('stand_id')
+                    ->where('language_id','like',$_GET['language'])->orderBy('name')->select('id', 'name')->get();
+            }
+            else{
+                $videos = Video::whereNull('stand_id')->orderBy('name')->select('id', 'name')->get();
+            }
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($videos);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

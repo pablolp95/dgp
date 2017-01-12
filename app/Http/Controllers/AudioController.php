@@ -206,6 +206,26 @@ class AudioController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailable()
+    {
+        try {
+            if(isset($_GET['language'])) {
+                $audio = Audio::whereNull('stand_id')
+                    ->where('language_id','like',$_GET['language'])->select('id', 'name')->get();
+            }
+            else{
+                $audio = Audio::whereNull('stand_id')->select('id', 'name')->get();
+            }
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($audio);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

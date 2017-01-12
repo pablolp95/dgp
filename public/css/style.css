@@ -189,7 +189,9 @@ a:hover {
     margin-right: -10px;
 }
 
-#video-list {
+.list {
     overflow-y: auto;
     max-height: 200px;
 }
+
+

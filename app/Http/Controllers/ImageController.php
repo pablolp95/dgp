@@ -188,6 +188,21 @@ class ImageController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailable()
+    {
+        try {
+            $images = Image::whereNull('stand_id')->select('id', 'name')->get();
+
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($images);
+    }
+    
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

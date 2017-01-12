@@ -74,32 +74,35 @@ Route::get('route/{id}/associate/stand',['as' => 'route.associate.stand', 'uses'
 Route::post('route/{id}/associate/stand',['as' => 'route.add.stand', 'uses' => 'RouteController@addStand']);
 
 //API REST JSON
-Route::get('api/stand',['as' => 'stand.get.json', 'uses' => 'StandController@getAll']);
+Route::get('api/stand',['as' => 'stand.getAll.json', 'uses' => 'StandController@getAll']);
 Route::get('api/stand/{id}',['as' => 'stand.get.json', 'uses' => 'StandController@get']);
-Route::get('api/stand/{id}/images',['as' => 'stand.get.json', 'uses' => 'StandController@getImages']);
-Route::get('api/stand/{id}/audio',['as' => 'stand.get.json', 'uses' => 'StandController@getAudio']);
-Route::get('api/stand/{id}/videos',['as' => 'stand.get.json', 'uses' => 'StandController@getVideos']);
-Route::get('api/stand/{id}/texts',['as' => 'stand.get.json', 'uses' => 'StandController@getTexts']);
+Route::get('api/stand/{id}/images',['as' => 'stand.getImages.json', 'uses' => 'StandController@getImages']);
+Route::get('api/stand/{id}/audio',['as' => 'stand.getAudio.json', 'uses' => 'StandController@getAudio']);
+Route::get('api/stand/{id}/videos',['as' => 'stand.getVideos.json', 'uses' => 'StandController@getVideos']);
+Route::get('api/stand/{id}/texts',['as' => 'stand.getTexts.json', 'uses' => 'StandController@getTexts']);
 
-Route::get('api/zone',['as' => 'zone.get.json', 'uses' => 'ZoneController@getAll']);
+Route::get('api/zone',['as' => 'zone.getAll.json', 'uses' => 'ZoneController@getAll']);
 Route::get('api/zone/{id}',['as' => 'zone.get.json', 'uses' => 'ZoneController@get']);
-Route::get('api/zone/{id}/stands',['as' => 'stand.get.json', 'uses' => 'ZoneController@getStands']);
+Route::get('api/zone/{id}/stands',['as' => 'stand.getStands.json', 'uses' => 'ZoneController@getStands']);
 
-Route::get('api/route',['as' => 'route.get.json', 'uses' => 'RouteController@getAll']);
+Route::get('api/route',['as' => 'route.getAll.json', 'uses' => 'RouteController@getAll']);
 Route::get('api/route/{id}',['as' => 'route.get.json', 'uses' => 'RouteController@get']);
-Route::get('api/route/{id}/stands',['as' => 'route.get.json', 'uses' => 'RouteController@getStands']);
+Route::get('api/route/{id}/stands',['as' => 'routeStands.get.json', 'uses' => 'RouteController@getStands']);
 
-Route::get('api/audio',['as' => 'audio.get.json', 'uses' => 'AudioController@getAll']);
+Route::get('api/audio',['as' => 'audio.getAll.json', 'uses' => 'AudioController@getAll']);
+Route::get('api/audio/available',['as' => 'audio.getAvailable.json', 'uses' => 'AudioController@getAvailable']);
 Route::get('api/audio/{id}',['as' => 'audio.get.json', 'uses' => 'AudioController@get']);
-Route::get('api/audio/{id}/file',['as' => 'audio.get.json', 'uses' => 'AudioController@getFile']);
+Route::get('api/audio/{id}/file',['as' => 'audio.getFile.json', 'uses' => 'AudioController@getFile']);
 
-Route::get('api/image',['as' => 'image.get.json', 'uses' => 'ImageController@getAll']);
+Route::get('api/image',['as' => 'image.getAll.json', 'uses' => 'ImageController@getAll']);
+Route::get('api/image/available',['as' => 'image.getAvailable.json', 'uses' => 'ImageController@getAvailable']);
 Route::get('api/image/{id}',['as' => 'image.get.json', 'uses' => 'ImageController@get']);
-Route::get('api/image/{id}/file',['as' => 'image.get.json', 'uses' => 'ImageController@getFile']);
+Route::get('api/image/{id}/file',['as' => 'image.getFile.json', 'uses' => 'ImageController@getFile']);
 
-Route::get('api/video',['as' => 'video.get.json', 'uses' => 'VideoController@getAll']);
+Route::get('api/video',['as' => 'video.getAll.json', 'uses' => 'VideoController@getAll']);
+Route::get('api/video/available',['as' => 'video.getAvailable.json', 'uses' => 'VideoController@getAvailable']);
 Route::get('api/video/{id}',['as' => 'video.get.json', 'uses' => 'VideoController@get']);
-Route::get('api/video/{id}/file',['as' => 'video.get.json', 'uses' => 'VideoController@getFile']);
+Route::get('api/video/{id}/file',['as' => 'video.getFile.json', 'uses' => 'VideoController@getFile']);
 
-Route::get('api/language',['as' => 'language.get.json', 'uses' => 'LanguageController@getAll']);
+Route::get('api/language',['as' => 'language.getAll.json', 'uses' => 'LanguageController@getAll']);
 Route::get('api/language/{id}',['as' => 'language.get.json', 'uses' => 'LanguageController@get']);
