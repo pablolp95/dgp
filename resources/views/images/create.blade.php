@@ -14,7 +14,9 @@
     {!! Form::close() !!}
 @endsection
 
-{{--@section("scripts")
+@section("scripts")
     @parent
-    <script>initProductValidation()</script>
-@endsection--}}
+    <script>
+        initImageValidation();
+    </script>
+@endsection

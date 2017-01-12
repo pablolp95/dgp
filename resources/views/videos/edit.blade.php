@@ -17,5 +17,7 @@
 
 @section("scripts")
     @parent
-    <script>initProductValidation()</script>
+    <script>
+        initVideoValidation();
+    </script>
 @endsection
