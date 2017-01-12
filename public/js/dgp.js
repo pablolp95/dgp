@@ -163,6 +163,62 @@ function initStandValidation() {
     })
 }
 
+function initRouteValidation() {
+    $("form").materialid({
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {}
+                }
+            },
+            description: {
+                validators: {
+                    notEmpty: {}
+                }
+            },
+            floor: {
+                validators: {
+                    notEmpty: {},
+                    numeric:{}
+                }
+            }
+        },
+        config: {
+            locale: "es_ES"
+        }
+    })
+}
+
+function initZoneValidation() {
+    $("form").materialid({
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {}
+                }
+            },
+            description: {
+                validators: {
+                    notEmpty: {}
+                }
+            },
+            floor: {
+                validators: {
+                    notEmpty: {},
+                    numeric:{}
+                }
+            },
+            thematic: {
+                validators:{
+                    notEmpty: {}
+                }
+            }
+        },
+        config: {
+            locale: "es_ES"
+        }
+    })
+}
 function initAudioValidation() {
     $("form").materialid({
         fields: {

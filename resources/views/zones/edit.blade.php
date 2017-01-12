@@ -14,4 +14,9 @@
     {!! Form::close() !!}
     @include("zones._destroy")
 @endsection
-
+@section("scripts")
+    @parent
+    <script>
+        initZoneValidation();
+    </script>
+@endsection
