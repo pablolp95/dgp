@@ -15,3 +15,10 @@
     @include("stands._destroy")
 @endsection
 
+@section("scripts")
+    @parent
+    <script>
+        initStandValidation();
+    </script>
+@endsection
+
