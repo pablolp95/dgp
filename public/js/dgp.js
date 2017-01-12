@@ -148,6 +148,21 @@ $(document).on("click", "#show-images", function() {
     $('#response-modal').modal('open');
 });
 
+function initStandValidation() {
+    $("form").materialid({
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {}
+                }
+            }
+        },
+        config: {
+            locale: "es_ES"
+        }
+    })
+}
+
 /*
 function initClientValidation() {
     $("form").materialid({

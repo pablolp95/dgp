@@ -13,3 +13,10 @@
     @include("stands._model")
     {!! Form::close() !!}
 @endsection
+
+@section("scripts")
+    @parent
+    <script>
+        initStandValidation();
+    </script>
+@endsection
