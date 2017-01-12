@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col s12 m8 l4 offset-m2 offset-l4">
             <div id="auth_box">
-                <h3 class="brand-logo grey-text text-darken-3">DGP</h3>
+                <h3 class="brand-logo grey-text text-darken-3">Museo Caja Granada</h3>
                 @yield('auth_form')
                 <div class="clearfix"></div>
             </div>
