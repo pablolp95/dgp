@@ -33,13 +33,15 @@ class UsuarioController extends Controller
     {
         $r = Role::all();
         $roles = [];
+
         foreach($r as $role) {
             if($role["name"] != "superadmin" && Auth::user()->hasRole("superadmin")) {
                 $roles[$role["name"]] = $role["display_name"];
-            } else if($role["name"] != "admin" && $role["name"] != "superadmin") {
+            } else if($role["name"] != "superadmin") {
                 $roles[$role["name"]] = $role["display_name"];
             }
         }
+
         return view("usuarios.create",compact("roles"));
     }
 
