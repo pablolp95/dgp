@@ -75,6 +75,7 @@ Route::post('route/{id}/associate/stand',['as' => 'route.add.stand', 'uses' => '
 
 //API REST JSON
 Route::get('api/stand',['as' => 'stand.getAll.json', 'uses' => 'StandController@getAll']);
+Route::get('api/stand/available',['as' => 'stand.getAvailable.json', 'uses' => 'StandController@getAvailable']);
 Route::get('api/stand/{id}',['as' => 'stand.get.json', 'uses' => 'StandController@get']);
 Route::get('api/stand/{id}/images',['as' => 'stand.getImages.json', 'uses' => 'StandController@getImages']);
 Route::get('api/stand/{id}/audio',['as' => 'stand.getAudio.json', 'uses' => 'StandController@getAudio']);

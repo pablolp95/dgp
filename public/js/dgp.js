@@ -40,14 +40,14 @@ function addTab(){
                 "<div class='col s12 no-padding'>"+
                     "<h6 style='color:#9E9E9E'>Vídeos asociados</h6>"+
                     "<ul id='video-list-" + selectValue + "' class='list collection with-header'>"+
-                        "<li class='collection-item'><label>Asociar un nuevo vídeo...</label></li>"+
+                        "<li id='video-label' class='collection-item'><label>Asociar un nuevo video...</label></li>"+
                     "</ul>"+
                 "</div>" +
                 "<button type='button' id='show-videos' class='waves-effect waves-light btn indigo left'>Mostrar vídeos</button>"+
                 "<div class='col s12 no-padding'>"+
                     "<h6 style='color:#9E9E9E'>Audios asociados</h6>"+
                     "<ul id='audio-list-" + selectValue + "' class='list collection with-header'>"+
-                        "<li class='collection-item'><label>Asociar un nuevo audio...</label></li>"+
+                        "<li id='audio-label' class='collection-item'><label>Asociar un nuevo audio...</label></li>"+
                     "</ul>"+
                 "</div>" +
                 "<button type='button' id='show-audio' class='waves-effect waves-light btn indigo left'>Mostrar audios</button>"+
@@ -96,56 +96,288 @@ $(document).on("click", "#show-videos", function() {
         .done(function(response) {
             var output ='';
             $.each(response, function(index,value) {
-             output+='<li class="collection-item">' +
-             '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id +'"/>' +
-             '<label for="id-'+ value.id +'">' + value.name + '</label>' +
-             '</li>';
-
+                if($("#video-" + value.id).length == 0){
+                    output += '<li class="collection-item">' +
+                    '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
+                    '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                    '</li>';
+                }
             });
-            $("#response-container").html(output);
+            $("#video-response-container").html(output);
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
 
-            $("#response-container").html("Algo ha fallado: " + textStatus + errorThrown);
+            $("#video-response-container").html("Algo ha fallado: " + textStatus + errorThrown);
 
         });
 
-    $('#response-modal').modal('open');
-});
-
-$(document).on("click", "#modal-confirm", function() {
-    var a_href = $( "ul.tabs li.tab a.active" ).attr( 'href' );
-    var itemId = a_href.substring( 1, a_href.length );
-    var list = 'video-list-' + itemId;
-    $('#video-list-' + itemId).empty();
-    $('#response-container').children('li').each(function() {
-        if($(this).children('input[type=checkbox]').is(':checked')){
-            $('#video-list-' + itemId).append('<li class="collection-item">' +
-                '<input type="hidden" name="videos[]" value="' + $(this).children('input').val()  + '">' +
-                $(this).children('label').html() + '</li>');
-            //alert($(this).children('label').html());
-        }
-        //alert($(this).children('input[type=checkbox]').val());
-    });
-    /*$.each($('input[type=checkbox]:checked'), function() {
-        alert($(this).val());
-    });*/
-
-    $('#response-container').empty();
-    $('#response-modal').modal('close');
-});
-
-$(document).on("click", "#modal-cancel", function() {
-    $('#response-modal').modal('close');
+    if($('#response-container li').length == 0){
+        $('#response-container').html('<li class="collection-item">No hay recursos disponibles</li>');
+    }
+    $('#video-response-modal').modal('open');
 });
 
 $(document).on("click", "#show-audio", function() {
-    $('#response-modal').modal('open');
+    var getdetails = function( id ) {
+        var base_url = location.hostname;
+        return $.getJSON("http://"+base_url+"/api/audio/available", {
+
+            "language": id
+
+        });
+
+    };
+
+    var a_href = $( "ul.tabs li.tab a.active" ).attr( 'href' );
+    var itemId = a_href.substring( 1, a_href.length );
+
+    getdetails( itemId )
+        .done(function(response) {
+            var output ='';
+            $.each(response, function(index,value) {
+                if($("#audio-" + value.id).length == 0){
+                    output += '<li class="collection-item">' +
+                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '</li>';
+                }
+            });
+            $("#audio-response-container").html(output);
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+
+            $("#audio-response-container").html("Algo ha fallado: " + textStatus + errorThrown);
+
+        });
+
+    /*if($('#response-container li').length == 0){
+     $('#response-container').html('<li class="collection-item">No hay recursos disponibles</li>');
+     }*/
+    $('#audio-response-modal').modal('open');
 });
 
 $(document).on("click", "#show-images", function() {
-    $('#response-modal').modal('open');
+    var getdetails = function() {
+        var base_url = location.hostname;
+        return $.getJSON("http://"+base_url+"/api/image/available");
+
+    };
+
+    getdetails()
+        .done(function(response) {
+            var output ='';
+            $.each(response, function(index,value) {
+                if($("#image-" + value.id).length == 0){
+                    output += '<li class="collection-item">' +
+                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '</li>';
+                }
+            });
+            $("#image-response-container").html(output);
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+
+            $("#image-response-container").html("Algo ha fallado: " + textStatus + errorThrown);
+
+        });
+
+    /*if($('#response-container li').length == 0){
+     $('#response-container').html('<li class="collection-item">No hay recursos disponibles</li>');
+     }*/
+    $('#image-response-modal').modal('open');
+});
+
+$(document).on("click", "#show-stands-zones", function() {
+    var getdetails = function(resource) {
+        var base_url = location.hostname;
+        return $.getJSON("http://"+base_url+"/api/stand/available?resource=zone");
+
+    };
+
+    getdetails()
+        .done(function(response) {
+            var output ='';
+            $.each(response, function(index,value) {
+                if($("#stand-" + value.id).length == 0){
+                    output += '<li class="collection-item">' +
+                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '</li>';
+                }
+            });
+            $("#stand-response-container").html(output);
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+
+            $("#stand-response-container").html("Algo ha fallado: " + textStatus + errorThrown);
+
+        });
+
+    /*if($('#response-container li').length == 0){
+     $('#response-container').html('<li class="collection-item">No hay recursos disponibles</li>');
+     }*/
+    $('#stand-response-modal').modal('open');
+});
+
+$(document).on("click", "#show-stands-routes", function() {
+    var getdetails = function(resource) {
+        var base_url = location.hostname;
+        return $.getJSON("http://"+base_url+"/api/stand/available?resource=route");
+
+    };
+
+    getdetails()
+        .done(function(response) {
+            var output ='';
+            $.each(response, function(index,value) {
+                if($("#stand-" + value.id).length == 0){
+                    output += '<li class="collection-item">' +
+                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '</li>';
+                }
+            });
+            $("#stand-response-container").html(output);
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+
+            $("#stand-response-container").html("Algo ha fallado: " + textStatus + errorThrown);
+
+        });
+
+    /*if($('#response-container li').length == 0){
+     $('#response-container').html('<li class="collection-item">No hay recursos disponibles</li>');
+     }*/
+    $('#stand-response-modal').modal('open');
+});
+
+$(document).on("click", "#video-modal-confirm", function() {
+    var a_href = $( "ul.tabs li.tab a.active" ).attr( 'href' );
+    var itemId = a_href.substring( 1, a_href.length );
+    var id;
+
+    $('#video-label').remove();
+    $('#video-response-container').children('li').each(function() {
+        if($(this).children('input[type=checkbox]').is(':checked')){
+            id = $(this).children('input').val();
+            $('#video-list-' + itemId).append('<li class="collection-item">' +
+                '<input id="video-' + id + '" type="hidden" name="videos[]" value="' + id + '">' +
+                $(this).children('label').html() +
+                '<a href="#!" class="delete-video-resource secondary-content"><i class="material-icons">delete</i></a>' +
+                '</li>');
+        }
+    });
+
+    if($('#video-list-' + itemId + ' li').length == 0){
+        $('#video-list-' + itemId).append("<li id='video-label' class='collection-item'><label>Asociar un nuevo vídeo...</label></li>");
+    }
+
+    $('#video-response-container').empty();
+    $('#video-response-modal').modal('close');
+});
+
+$(document).on("click", "#audio-modal-confirm", function() {
+    var a_href = $( "ul.tabs li.tab a.active" ).attr( 'href' );
+    var itemId = a_href.substring( 1, a_href.length );
+    var id;
+
+    $('#audio-label').remove();
+    $('#audio-response-container').children('li').each(function() {
+        if($(this).children('input[type=checkbox]').is(':checked')){
+            id = $(this).children('input').val();
+            $('#audio-list-' + itemId).append('<li class="collection-item">' +
+                '<input id="audio-' + id + '" type="hidden" name="audio[]" value="' + id + '">' +
+                $(this).children('label').html() +
+                '<a href="#!" class="delete-audio-resource secondary-content"><i class="material-icons">delete</i></a>' +
+                '</li>');
+        }
+    });
+
+    if($('#audio-list-' + itemId + ' li').length == 0){
+        $('#audio-list-' + itemId).append("<li class='collection-item'><label>Asociar un nuevo audio...</label></li>");
+    }
+
+    $('#audio-response-container').empty();
+    $('#audio-response-modal').modal('close');
+});
+
+$(document).on("click", "#image-modal-confirm", function() {
+    var id;
+
+    $('#image-label').remove();
+    $('#image-response-container').children('li').each(function() {
+        if($(this).children('input[type=checkbox]').is(':checked')){
+            id = $(this).children('input').val();
+            $('#image-list').append('<li class="collection-item">' +
+                '<input id="image-' + id + '" type="hidden" name="images[]" value="' + id + '">' +
+                $(this).children('label').html() +
+                '<a href="#!" class="delete-image-resource secondary-content"><i class="material-icons">delete</i></a>' +
+                '</li>');
+        }
+    });
+
+    if($('#image-list li').length == 0){
+        $('#image-list').append("<li id='image-label' class='collection-item'><label>Asociar una nueva imágenes...</label></li>");
+    }
+
+    $('#image-response-container').empty();
+    $('#image-response-modal').modal('close');
+});
+
+$(document).on("click", "#stand-modal-confirm", function() {
+    var id;
+
+    $('#stand-label').remove();
+    $('#stand-response-container').children('li').each(function() {
+        if($(this).children('input[type=checkbox]').is(':checked')){
+            id = $(this).children('input').val();
+            $('#stand-list').append('<li class="collection-item">' +
+                '<input id="stand-' + id + '" type="hidden" name="stands[]" value="' + id + '">' +
+                $(this).children('label').html() +
+                '<a href="#!" class="delete-image-resource secondary-content"><i class="material-icons">delete</i></a>' +
+                '</li>');
+        }
+    });
+
+    if($('#stand-list li').length == 0){
+        $('#stand-list').append("<li id='stand-label' class='collection-item'><label>Asociar un nuevo stand...</label></li>");
+    }
+
+    $('#stand-response-container').empty();
+    $('#stand-response-modal').modal('close');
+});
+
+$(document).on("click", ".delete-video-resource", function() {
+    var list = '#' + $(this).parent().parent().attr('id');
+    $(this).parent().remove();
+
+    if($(list + ' li').length == 0){
+        $(list).append("<li id='video-label' class='collection-item'><label>Asociar un nuevo video...</label></li>");
+    }
+});
+
+$(document).on("click", ".delete-audio-resource", function() {
+    var list = '#' + $(this).parent().parent().attr('id');
+    $(this).parent().remove();
+
+    if($(list + ' li').length == 0){
+        $(list).append("<li id='audio-label' class='collection-item'><label>Asociar un nuevo audio...</label></li>");
+    }
+});
+
+$(document).on("click", ".delete-image-resource", function() {
+    var list = '#' + $(this).parent().parent().attr('id');
+    $(this).parent().remove();
+
+    if($(list + ' li').length == 0){
+        $(list).append("<li id='image-label' class='collection-item'><label>Asociar una nueva imagen...</label></li>");
+    }
 });
 
 function initStandValidation() {
@@ -170,17 +402,6 @@ function initRouteValidation() {
                 validators: {
                     notEmpty: {}
                 }
-            },
-            description: {
-                validators: {
-                    notEmpty: {}
-                }
-            },
-            floor: {
-                validators: {
-                    notEmpty: {},
-                    numeric:{}
-                }
             }
         },
         config: {
@@ -196,22 +417,6 @@ function initZoneValidation() {
                 validators: {
                     notEmpty: {}
                 }
-            },
-            description: {
-                validators: {
-                    notEmpty: {}
-                }
-            },
-            floor: {
-                validators: {
-                    notEmpty: {},
-                    numeric:{}
-                }
-            },
-            thematic: {
-                validators:{
-                    notEmpty: {}
-                }
             }
         },
         config: {
@@ -219,15 +424,11 @@ function initZoneValidation() {
         }
     })
 }
+
 function initAudioValidation() {
     $("form").materialid({
         fields: {
             name: {
-                validators: {
-                    notEmpty: {}
-                }
-            },
-            description: {
                 validators: {
                     notEmpty: {}
                 }
@@ -246,11 +447,6 @@ function initImageValidation() {
                 validators: {
                     notEmpty: {}
                 }
-            },
-            description: {
-                validators: {
-                    notEmpty: {}
-                }
             }
         },
         config: {
@@ -263,11 +459,6 @@ function initVideoValidation() {
     $("form").materialid({
         fields: {
             name: {
-                validators: {
-                    notEmpty: {}
-                }
-            },
-            description: {
                 validators: {
                     notEmpty: {}
                 }

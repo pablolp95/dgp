@@ -74,6 +74,32 @@ class RouteController extends Controller
         $route->name = $request->input('name');
         ($save) ? $route->save() : null;
 
+        $stands = $request->input('stands');
+        if (isset($stands)) {
+            $current_stands = $route->stands;
+            foreach ($current_stands as $current_stand) {
+                if (array_has($stands, $current_stand->id)){
+                    array_diff($stands, array($current_stand->id));
+                }
+                else {
+                    $current_stand->route_id = null;
+                    $current_stand->save();
+                }
+            }
+
+            foreach ($stands as $stand_id) {
+                $stand = Stand::findOrFail($stand_id);
+                $route->stands()->save($stand);
+            }
+        }
+        else {
+            $current_stands = $route->stands;
+            foreach ($current_stands as $current_stand) {
+                $current_stand->zone_id = null;
+                $current_stand->save();
+            }
+        }
+
         return $route;
     }
 
@@ -99,7 +125,9 @@ class RouteController extends Controller
     public function edit($id)
     {
         $route = Route::findOrFail($id);
-        return view('routes.edit',compact('route'));
+
+        $stands = $route->stands;
+        return view('routes.edit',compact('route', 'stands'));
     }
 
     /**
@@ -205,30 +233,6 @@ class RouteController extends Controller
         }
 
         return response()->json($stands);
-    }
-    
-    /**
-     * Display the view to associate an stand to an specific zone.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function associateStand($id){
-        return view("routes.associate_stand", compact("id"));
-    }
-
-    public function addStand(Request $request,$id){
-       try{
-           $route = Route::findOrFail($id);
-            $stand = Stand::findOrFail($request->input('stand_id'));
-            $route->last_update_user_id = Auth::id();
-            $route->stands()->save($stand);
-            session()->flash('flash_message', 'Se ha asociado el stand #' . $request->input("stand_id") . ' a la ruta #' . $route->id . ' - ' . $route->name . ' con éxito');
-       }catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
-       }
-        return redirect()->route("route.associate.stand", ["id" => $id]);
-
     }
 
 }

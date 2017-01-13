@@ -82,8 +82,18 @@ class StandController extends Controller
 
         //Creo los textos asociados al stand en los distintos idiomas
         $texts = $request->input('texts');
-        if(isset($texts)){
-            foreach($texts as $id_language => $stand_info){
+        if (isset($texts)) {
+            $current_texts = $stand->texts;
+            foreach ($current_texts as $current_text) {
+                if (array_has($texts, $current_text->id)){
+                    array_diff($texts, array($current_text->id));
+                }
+                else {
+                    $current_text->delete();
+                }
+            }
+
+            foreach ($texts as $id_language => $stand_info) {
                 $text = $stand->texts()->where('language_id', $id_language)->first();
                 if(is_null($text) || empty($text)){
                     $text = new Text();
@@ -99,13 +109,19 @@ class StandController extends Controller
                 $stand->texts()->save($text);
             }
         }
+        else {
+            $current_texts = $stand->texts;
+            foreach ($current_texts as $current_text){
+                $current_text->delete();
+            }
+        }
 
         $videos = $request->input('videos');
-        if (isset($videos)){
+        if (isset($videos)) {
             $current_videos = $stand->videos;
-            foreach ($current_videos as $current_video){
+            foreach ($current_videos as $current_video) {
                 if (array_has($videos, $current_video->id)){
-                    array_forget($videos, $current_video->id);
+                    array_diff($videos, array($current_video->id));
                 }
                 else {
                     $current_video->stand_id = null;
@@ -113,19 +129,68 @@ class StandController extends Controller
                 }
             }
 
-            foreach ($videos as $video_id){
+            foreach ($videos as $video_id) {
                 $video = Video::findOrFail($video_id);
-                $stand->last_update_user_id = Auth::id();
                 $stand->videos()->save($video);
+            }
+        }
+        else {
+            $current_videos = $stand->videos;
+            foreach ($current_videos as $current_video){
+                $current_video->stand_id = null;
+                $current_video->save();
             }
         }
 
         $audio = $request->input('audio');
-        if (isset($audio)){
-            foreach ($audio as $audio_id){
+        if (isset($audio)) {
+            $current_audios = $stand->audio;
+            foreach ($current_audios as $current_audio) {
+                if (array_has($audio, $current_audio->id)){
+                    array_diff($audio, array($current_audio->id));
+                }
+                else {
+                    $current_audio->stand_id = null;
+                    $current_audio->save();
+                }
+            }
+
+            foreach ($audio as $audio_id) {
                 $audio = Audio::findOrFail($audio_id);
-                $stand->last_update_user_id = Auth::id();
                 $stand->audio()->save($audio);
+            }
+        }
+        else {
+            $current_audios = $stand->audio;
+            foreach ($current_audios as $current_audio) {
+                $current_audio->stand_id = null;
+                $current_audio->save();
+            }
+        }
+
+        $images = $request->input('images');
+        if (isset($images)) {
+            $current_images = $stand->images;
+            foreach ($current_images as $current_image) {
+                if (array_has($images, $current_image->id)){
+                    array_diff($images, array($current_image->id));
+                }
+                else {
+                    $current_image->stand_id = null;
+                    $current_image->save();
+                }
+            }
+
+            foreach ($images as $image_id) {
+                $image = Image::findOrFail($image_id);
+                $stand->images()->save($image);
+            }
+        }
+        else {
+            $current_images = $stand->audio;
+            foreach ($current_images as $current_image) {
+                $current_image->stand_id = null;
+                $current_image->save();
             }
         }
         
@@ -141,7 +206,19 @@ class StandController extends Controller
     public function show($id)
     {
         $stand = Stand::findOrFail($id);
-        return view('stands.show',compact('stand'));
+        $available = Language::all()->sortBy('language');
+        $languages = array();
+
+        foreach ($available as $language){
+            $languages[$language->id] = $language->language;
+        }
+
+        $texts = $stand->texts;
+        $videos = $stand->videos;
+        $audio = $stand->audio;
+        $images = $stand->images;
+
+        return view('stands.show',compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
     }
 
     /**
@@ -163,8 +240,9 @@ class StandController extends Controller
         $texts = $stand->texts;
         $videos = $stand->videos;
         $audio = $stand->audio;
+        $images = $stand->images;
 
-        return view('stands.edit',compact('stand','languages','texts', 'videos', 'audio'));
+        return view('stands.edit',compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
     }
 
     /**
@@ -234,6 +312,33 @@ class StandController extends Controller
     {
         try {
             $stands = Stand::all();
+        } catch(NotFoundHttpException $e) {
+            abort(404);
+        }
+
+        return response()->json($stands);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailable()
+    {
+        try {
+            if(isset($_GET['resource'])) {
+                if($_GET['resource'] == 'zone'){
+                    $stands = Stand::whereNull('zone_id')->orderBy('name')->select('id', 'name')->get();
+                }
+                else if($_GET['resource'] == 'route'){
+                    $stands = Stand::whereNull('route_id')->orderBy('name')->select('id', 'name')->get();
+                }
+                else{
+                    $stands = 'BAD VALUE';
+                }
+            }
+            else{
+                $stands = 'BAD PROTOCOL';
+            }
         } catch(NotFoundHttpException $e) {
             abort(404);
         }
@@ -361,53 +466,4 @@ class StandController extends Controller
         return response()->json($texts);
     }
 
-    /**
-     * Display the view to associate an audio to an specific stand.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function associateAudio($id){
-        return view("stands.associate_audio", compact("id"));
-    }
-
-    public function addAudio(Request $request,$id){
-        try{
-            $stand = Stand::findOrFail($id);
-            $audio = Audio::findOrFail($request->input('audio_id'));
-            $stand->last_update_user_id = Auth::id();
-            $stand->audio()->save($audio);
-
-        }catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
-        }
-        session()->flash('flash_message', 'Se ha asociado el audio #' . $request->input("audio_id") . ' al stand #' . $stand->id . ' - ' . $stand->name . ' con éxito');
-        return redirect()->route("stand.associate.audio", ["id" => $id]);
-
-    }
-
-    /**
-     * Display the view to associate a video to an specific stand.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function associateVideo($id){
-        return view("stands.associate_video", compact("id"));
-    }
-
-    public function addvideo(Request $request,$id){
-        try{
-            $stand = Stand::findOrFail($id);
-            $video = Video::findOrFail($request->input('video_id'));
-            $stand->last_update_user_id = Auth::id();
-            $stand->videos()->save($video);
-
-        }catch (ModelNotFoundException $e) {
-            session()->flash('flash_message', 'Ha habido un error');
-        }
-        session()->flash('flash_message', 'Se ha asociado el video #' . $request->input("video_id") . ' al stand #' . $stand->id . ' - ' . $stand->name . ' con éxito');
-        return redirect()->route("stand.associate.video", ["id" => $id]);
-
-    }
 }

@@ -73,6 +73,33 @@ class ZoneController extends Controller
         $zone->floor = $request->input('floor');
 
         ($save) ? $zone->save() : null;
+
+        $stands = $request->input('stands');
+        if (isset($stands)) {
+            $current_stands = $zone->stands;
+            foreach ($current_stands as $current_stand) {
+                if (array_has($stands, $current_stand->id)){
+                    array_diff($stands, array($current_stand->id));
+                }
+                else {
+                    $current_stand->zone_id = null;
+                    $current_stand->save();
+                }
+            }
+
+            foreach ($stands as $stand_id) {
+                $stand = Stand::findOrFail($stand_id);
+                $zone->stands()->save($stand);
+            }
+        }
+        else {
+            $current_stands = $zone->stands;
+            foreach ($current_stands as $current_stand) {
+                $current_stand->zone_id = null;
+                $current_stand->save();
+            }
+        }
+        
         return $zone;
     }
 
@@ -98,7 +125,10 @@ class ZoneController extends Controller
     public function edit($id)
     {
         $zone = Zone::findOrFail($id);
-        return view('zones.edit',compact('zone'));
+
+        $stands = $zone->stands;
+
+        return view('zones.edit',compact('zone', 'stands'));
     }
 
     /**
