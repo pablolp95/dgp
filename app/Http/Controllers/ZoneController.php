@@ -79,7 +79,7 @@ class ZoneController extends Controller
             $current_stands = $zone->stands;
             foreach ($current_stands as $current_stand) {
                 if (array_has($stands, $current_stand->id)){
-                    array_diff($stands, array($current_stand->id));
+                    unset($stands[$current_stand->id]);
                 }
                 else {
                     $current_stand->zone_id = null;

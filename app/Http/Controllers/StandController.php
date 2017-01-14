@@ -86,7 +86,7 @@ class StandController extends Controller
             $current_texts = $stand->texts;
             foreach ($current_texts as $current_text) {
                 if (array_has($texts, $current_text->id)){
-                    array_diff($texts, array($current_text->id));
+                    unset($texts[$current_text->id]);
                 }
                 else {
                     $current_text->delete();
@@ -121,7 +121,7 @@ class StandController extends Controller
             $current_videos = $stand->videos;
             foreach ($current_videos as $current_video) {
                 if (array_has($videos, $current_video->id)){
-                    array_diff($videos, array($current_video->id));
+                    unset($videos[$current_video->id]);
                 }
                 else {
                     $current_video->stand_id = null;
@@ -147,7 +147,7 @@ class StandController extends Controller
             $current_audios = $stand->audio;
             foreach ($current_audios as $current_audio) {
                 if (array_has($audio, $current_audio->id)){
-                    array_diff($audio, array($current_audio->id));
+                    unset($audio[$current_audio->id]);
                 }
                 else {
                     $current_audio->stand_id = null;
@@ -173,7 +173,7 @@ class StandController extends Controller
             $current_images = $stand->images;
             foreach ($current_images as $current_image) {
                 if (array_has($images, $current_image->id)){
-                    array_diff($images, array($current_image->id));
+                    unset($images[$current_image->id]);
                 }
                 else {
                     $current_image->stand_id = null;
