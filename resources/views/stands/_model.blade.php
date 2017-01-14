@@ -43,7 +43,7 @@
                                 </div>
                                 <!-- Description field -->
                                 <div class='input-field'>
-                                    <textarea id='description' class='materialize-textarea' name='texts[{{ $language_id }}][description]' cols='50' rows='10' value="{{ $text->description }}"></textarea>
+                                    <textarea id='description' class='materialize-textarea' name='texts[{{ $language_id }}][description]' cols='50' rows='10'> {{ $text->description }} </textarea>
                                     <label for='description'>Descripción del stand:*</label>
                                 </div>
                                 <div class='col s12 no-padding'>

@@ -25,7 +25,7 @@ class StandController extends Controller
     public function index()
     {
         $stands = Stand::orderBy('created_at', 'desc')->paginate(15);
-        return view('stands.index',compact('stands'));
+        return view('stands.index', compact('stands'));
     }
 
     /**
@@ -218,7 +218,7 @@ class StandController extends Controller
         $audio = $stand->audio;
         $images = $stand->images;
 
-        return view('stands.show',compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
+        return view('stands.show', compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
     }
 
     /**
@@ -242,7 +242,7 @@ class StandController extends Controller
         $audio = $stand->audio;
         $images = $stand->images;
 
-        return view('stands.edit',compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
+        return view('stands.edit', compact('stand', 'languages', 'texts', 'videos', 'audio', 'images'));
     }
 
     /**
@@ -288,7 +288,7 @@ class StandController extends Controller
     public function find($id)
     {
         $stand = Stand::findOrFail($id);
-        return view('stand.show',compact('stand'));
+        return view('stands.show', compact('stand'));
     }
 
     /**
@@ -302,7 +302,7 @@ class StandController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('stand.index',compact('stands'));
+        return view('stands.index',compact('stands'));
     }
 
     /**

@@ -82,7 +82,7 @@ class LanguageController extends Controller
     public function show($id)
     {
         $language = Language::findOrFail($id);
-        return view('languages.show',compact('language'));
+        return view('languages.show', compact('language'));
     }
 
     /**
@@ -94,7 +94,7 @@ class LanguageController extends Controller
     public function edit($id)
     {
         $language = Language::findOrFail($id);
-        return view('languages.edit',compact('language'));
+        return view('languages.edit', compact('language'));
     }
 
     /**

@@ -23,7 +23,7 @@ class ZoneController extends Controller
     public function index()
     {
         $zones = Zone::orderBy('created_at', 'desc')->paginate(15);
-        return view('zones.index',compact("zones"));
+        return view('zones.index', compact('zones'));
     }
 
     /**
@@ -113,7 +113,7 @@ class ZoneController extends Controller
     {
         $zone = Zone::findOrFail($id);
         $stands= $zone->stands;
-        return view('zones.show',compact('zone','stands'));
+        return view('zones.show', compact('zone','stands'));
     }
 
     /**
@@ -128,7 +128,7 @@ class ZoneController extends Controller
 
         $stands = $zone->stands;
 
-        return view('zones.edit',compact('zone', 'stands'));
+        return view('zones.edit', compact('zone', 'stands'));
     }
 
     /**
@@ -148,7 +148,7 @@ class ZoneController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado la zona #'.$zone->id.' - '.$zone->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('zone.index');
     }
 
     /**
@@ -174,7 +174,7 @@ class ZoneController extends Controller
     public function find($id)
     {
         $zone = Zone::findOrFail($id);
-        return view('zone.show',compact('zone'));
+        return view('zones.show', compact('zone'));
     }
 
     /**
@@ -188,7 +188,7 @@ class ZoneController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('zone.index',compact('zones'));
+        return view('zones.index', compact('zones'));
     }
 
     /**

@@ -64,7 +64,7 @@
                                 </div>
                                 <!-- Description field -->
                                 <div class='input-field'>
-                                    <textarea disabled id='description' class='materialize-textarea' name='texts[{{ $language_id }}][description]' cols='50' rows='10' value="{{ $text->description }}"></textarea>
+                                    <textarea disabled id='description' class='materialize-textarea' name='texts[{{ $language_id }}][description]' cols='50' rows='10'> {{ $text->description }} </textarea>
                                     <label for='description'>Descripción del stand:*</label>
                                 </div>
                                 <div class='col s12 no-padding'>
@@ -122,9 +122,15 @@
                         <li class='collection-item'> {{$image->name}} </li>
                     @endforeach
                 @else
-                    <li id='image-label' class='collection-item'><label>Ningúna imagen asociada</label></li>
+                    <li id='image-label' class='collection-item'><label>Ninguna imagen asociada</label></li>
                 @endif
             </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m5">
+            <p><strong>Código QR:</strong></p>
+            <img alt="QrStand" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->generate('http://ec2-52-59-235-58.eu-central-1.compute.amazonaws.com/api/stand/'.$stand->id)) !!} ">
         </div>
     </div>
 @endsection

@@ -123,7 +123,7 @@ class VideoController extends Controller
             $languages[$language->id] = $language->language;
         }
 
-        return view('videos.edit',compact('video', 'languages'));
+        return view('videos.edit', compact('video', 'languages'));
     }
 
     /**
@@ -172,7 +172,7 @@ class VideoController extends Controller
     public function find($id)
     {
         $video = Video::findOrFail($id);
-        return view('videos.show',compact('video'));
+        return view('videos.show', compact('video'));
     }
 
     /**
@@ -186,7 +186,7 @@ class VideoController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('videos.index',compact('videos'));
+        return view('videos.index', compact('videos'));
     }
 
     /**

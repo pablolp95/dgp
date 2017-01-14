@@ -21,7 +21,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = User::orderBy('created_at', 'desc')->paginate(15);
-        return view("usuarios.index",compact("usuarios"));
+        return view("usuarios.index", compact("usuarios"));
     }
 
     /**
@@ -42,7 +42,7 @@ class UsuarioController extends Controller
             }
         }
 
-        return view("usuarios.create",compact("roles"));
+        return view("usuarios.create", compact("roles"));
     }
 
     /**
@@ -95,7 +95,7 @@ class UsuarioController extends Controller
     public function show($id)
     {
         $usuario = User::findOrFail($id);
-        return view("usuarios.show",compact("usuario"));
+        return view("usuarios.show", compact("usuario"));
     }
 
     /**
@@ -116,7 +116,7 @@ class UsuarioController extends Controller
                 $roles[$role["name"]] = $role["display_name"];
             }
         }
-        return view("usuarios.edit",compact("usuario","roles"));
+        return view("usuarios.edit", compact("usuario","roles"));
     }
 
     /**
@@ -162,7 +162,7 @@ class UsuarioController extends Controller
     public function find($id)
     {
         $usuario = User::findOrFail($id);
-        return view("usuarios.show",compact("usuario"));
+        return view("usuarios.show", compact("usuario"));
     }
 
     /**
@@ -176,6 +176,6 @@ class UsuarioController extends Controller
             ->orWhere("id",$request->input("search"))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view("usuarios.index",compact("usuarios"));
+        return view("usuarios.index", compact("usuarios"));
     }
 }

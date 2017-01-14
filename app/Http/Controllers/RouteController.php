@@ -147,7 +147,7 @@ class RouteController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado el audio '.$route->id.' - '.$route    ->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('route.index');
     }
 
     /**
@@ -187,7 +187,7 @@ class RouteController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('route.index',compact('routes'));
+        return view('routes.index',compact('routes'));
     }
 
     /**

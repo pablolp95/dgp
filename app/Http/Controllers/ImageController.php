@@ -23,7 +23,7 @@ class ImageController extends Controller
     public function index()
     {
         $images = Image::orderBy('created_at', 'desc')->paginate(15);
-        return view('images.index',compact('images'));
+        return view('images.index', compact('images'));
     }
 
     /**
@@ -94,7 +94,7 @@ class ImageController extends Controller
     public function show($id)
     {
         $image = Image::findOrFail($id);
-        return view('images.show',compact('image'));
+        return view('images.show', compact('image'));
     }
 
     /**
@@ -106,7 +106,7 @@ class ImageController extends Controller
     public function edit($id)
     {
         $image = Image::findOrFail($id);
-        return view('images.edit',compact('image'));
+        return view('images.edit', compact('image'));
     }
 
     /**
@@ -126,7 +126,7 @@ class ImageController extends Controller
         }
 
         session()->flash('flash_message', 'Se ha actualizado la imagen #'.$image->id.' - '.$image->name.' con éxito');
-        return redirect()->route('dashboard');
+        return redirect()->route('image.index');
     }
 
     /**
@@ -155,7 +155,7 @@ class ImageController extends Controller
     public function find($id)
     {
         $image = Image::findOrFail($id);
-        return view('images.show',compact('image'));
+        return view('images.show', compact('image'));
     }
 
 
@@ -170,7 +170,7 @@ class ImageController extends Controller
             ->orWhere('id',$request->input('search'))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        return view('images.index',compact('image'));
+        return view('images.index', compact('image'));
     }
 
     /**
