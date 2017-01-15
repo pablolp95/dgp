@@ -24,7 +24,7 @@
     <div class="row">
         <div class="col s12">
             <p><strong>Nombre:</strong> {{ $video->name }}</p>
-            <p><strong>Descripción:</strong> {{ $video->filename }}</p>
+            <p><strong>Descripción:</strong> {{ $video->description }}</p>
         </div>
     </div>
     <div class="row">
