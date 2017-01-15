@@ -28,11 +28,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col m2">
+        <div class="col m6">
             <p><strong>Reproducir video:</strong></p>
         </div>
-    </div>
-    <div class="row">
         <div class="col m6 offset-l1">
             <video width="320" height="240" controls Pause>
                 <source src="http://{{$_SERVER['HTTP_HOST']}}/api/video/{{ $video->id }}/file" type="{{ $video->mime }}">
