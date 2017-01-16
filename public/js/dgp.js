@@ -98,8 +98,8 @@ $(document).on("click", "#show-videos", function() {
             $.each(response, function(index,value) {
                 if($("#video-" + value.id).length == 0){
                     output += '<li class="collection-item">' +
-                    '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
-                    '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                    '<input type="checkbox" class="filled-in" id="video-id-'+ value.id +'" value="'+ value.id + '"/>' +
+                    '<label for="video-id-'+ value.id +'">' + value.name + '</label>' +
                     '</li>';
                 }
             });
@@ -138,8 +138,8 @@ $(document).on("click", "#show-audio", function() {
             $.each(response, function(index,value) {
                 if($("#audio-" + value.id).length == 0){
                     output += '<li class="collection-item">' +
-                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
-                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '<input type="checkbox" class="filled-in" id="audio-id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="audio-id-'+ value.id +'">' + value.name + '</label>' +
                         '</li>';
                 }
             });
@@ -171,8 +171,8 @@ $(document).on("click", "#show-images", function() {
             $.each(response, function(index,value) {
                 if($("#image-" + value.id).length == 0){
                     output += '<li class="collection-item">' +
-                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
-                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '<input type="checkbox" class="filled-in" id="image-id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="image-id-'+ value.id +'">' + value.name + '</label>' +
                         '</li>';
                 }
             });
@@ -204,8 +204,8 @@ $(document).on("click", "#show-stands-zones", function() {
             $.each(response, function(index,value) {
                 if($("#stand-" + value.id).length == 0){
                     output += '<li class="collection-item">' +
-                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
-                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '<input type="checkbox" class="filled-in" id="stand-id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="stand-id-'+ value.id +'">' + value.name + '</label>' +
                         '</li>';
                 }
             });
@@ -237,8 +237,8 @@ $(document).on("click", "#show-stands-routes", function() {
             $.each(response, function(index,value) {
                 if($("#stand-" + value.id).length == 0){
                     output += '<li class="collection-item">' +
-                        '<input type="checkbox" class="filled-in" id="id-'+ value.id +'" value="'+ value.id + '"/>' +
-                        '<label for="id-'+ value.id +'">' + value.name + '</label>' +
+                        '<input type="checkbox" class="filled-in" id="stand-id-'+ value.id +'" value="'+ value.id + '"/>' +
+                        '<label for="stand-id-'+ value.id +'">' + value.name + '</label>' +
                         '</li>';
                 }
             });

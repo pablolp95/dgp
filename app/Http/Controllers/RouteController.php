@@ -78,7 +78,7 @@ class RouteController extends Controller
         if (isset($stands)) {
             $current_stands = $route->stands;
             foreach ($current_stands as $current_stand) {
-                if (array_has($stands, $current_stand->id)){
+                if (in_array($current_stand->id, $stands, true)){
                     unset($stands[$current_stand->id]);
                 }
                 else {

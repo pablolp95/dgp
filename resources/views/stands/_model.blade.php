@@ -54,7 +54,7 @@
                                             @foreach($videos as $video)
                                                 @if($video->language_id == $language_id)
                                                     <?php $exist = true ?>
-                                                    <li class='collection-item'><input type="hidden" name="videos[]" value="{{ $video->id }}"> {{$video->name}} <a href="#!" class="delete-video-resource secondary-content"><i class="material-icons">delete</i></a></li>
+                                                    <li class='collection-item'><input id="video-id-{{ $video->id }}" type="hidden" name="videos[]" value="{{ $video->id }}"> {{$video->name}} <a href="#!" class="delete-video-resource secondary-content"><i class="material-icons">delete</i></a></li>
                                                 @endif
                                             @endforeach
                                                 @if(!$exist)
@@ -74,7 +74,7 @@
                                             @foreach($audio as $audioResource)
                                                 @if($audioResource->language_id == $language_id)
                                                         <?php $exist = true ?>
-                                                    <li class='collection-item'><input type="hidden" name="audios[]" value="{{ $audioResource->id }}"> {{$audioResource->name}} <a href="#!" class="delete-audio-resource secondary-content"><i class="material-icons">delete</i></a></li>
+                                                    <li class='collection-item'><input id="audio-id-{{ $audioResource->id }}" type="hidden" name="audio[]" value="{{ $audioResource->id }}"> {{$audioResource->name}} <a href="#!" class="delete-audio-resource secondary-content"><i class="material-icons">delete</i></a></li>
                                                 @endif
                                             @endforeach
                                                 @if(!$exist)
@@ -104,7 +104,7 @@
             <ul id='image-list' class='list collection with-header'>
                 @if(isset($images) && !$images->isEmpty())
                     @foreach($images as $image)
-                            <li class='collection-item'><input type="hidden" name="images[]" value="{{ $image->id }}"> {{$image->name}} <a href="#!" class="delete-image-resource secondary-content"><i class="material-icons">delete</i></a></li>
+                            <li class='collection-item'><input id="image-id-{{ $image->id }}" type="hidden" name="images[]" value="{{ $image->id }}"> {{$image->name}} <a href="#!" class="delete-image-resource secondary-content"><i class="material-icons">delete</i></a></li>
                     @endforeach
                 @else
                     <li id='image-label' class='collection-item'><label>Asociar una nueva imagen...</label></li>

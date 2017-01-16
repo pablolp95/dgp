@@ -120,7 +120,7 @@ class StandController extends Controller
         if (isset($videos)) {
             $current_videos = $stand->videos;
             foreach ($current_videos as $current_video) {
-                if (array_has($videos, $current_video->id)){
+                if (in_array($current_video->id, $videos, true)){
                     unset($videos[$current_video->id]);
                 }
                 else {
@@ -128,7 +128,8 @@ class StandController extends Controller
                     $current_video->save();
                 }
             }
-
+            Log::info($current_videos);
+            Log::info($videos);
             foreach ($videos as $video_id) {
                 $video = Video::findOrFail($video_id);
                 $stand->videos()->save($video);
@@ -146,7 +147,7 @@ class StandController extends Controller
         if (isset($audio)) {
             $current_audios = $stand->audio;
             foreach ($current_audios as $current_audio) {
-                if (array_has($audio, $current_audio->id)){
+                if (in_array($current_audio->id, $audio, true)){
                     unset($audio[$current_audio->id]);
                 }
                 else {
@@ -172,7 +173,7 @@ class StandController extends Controller
         if (isset($images)) {
             $current_images = $stand->images;
             foreach ($current_images as $current_image) {
-                if (array_has($images, $current_image->id)){
+                if (in_array($current_image->id, $images, true)){
                     unset($images[$current_image->id]);
                 }
                 else {
@@ -187,7 +188,7 @@ class StandController extends Controller
             }
         }
         else {
-            $current_images = $stand->audio;
+            $current_images = $stand->images;
             foreach ($current_images as $current_image) {
                 $current_image->stand_id = null;
                 $current_image->save();
