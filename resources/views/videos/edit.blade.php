@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::model($video, ["method" => "put", "route" => array("video.update", $video->id)]) !!}
+    {!! Form::model($video, ["method" => "put", "enctype" => "multipart/form-data", "route" => array("video.update", $video->id)]) !!}
     @include("videos._model")
     {!! Form::close() !!}
     @include("videos._destroy")

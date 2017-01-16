@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::open(["method" => "post",  "enctype" => "multipart/form-data","route" => "video.store"]) !!}
+    {!! Form::open(["method" => "post",  "enctype" => "multipart/form-data", "route" => "video.store"]) !!}
     @include("videos._model")
     {!! Form::close() !!}
 @endsection

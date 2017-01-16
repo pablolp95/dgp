@@ -9,7 +9,7 @@
 @endsection
 
 @section("form")
-    {!! Form::model($image, ["method" => "put", "route" => array("image.update", $image->id)]) !!}
+    {!! Form::model($image, ["method" => "put", "enctype" => "multipart/form-data", "route" => array("image.update", $image->id)]) !!}
     @include("images._model")
     {!! Form::close() !!}
     @include("images._destroy")
