@@ -6,6 +6,7 @@ use App\Role;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -130,6 +131,9 @@ class UsuarioController extends Controller
     {
         try{
             $usuario = User::findOrFail($id);
+            $role = Role::where("name", $request->input("role"))->first();
+            $usuario->roles()->detach();
+            $usuario->roles()->attach($role);
             $this->silentSave($usuario,$request);
         } catch (ModelNotFoundException $e) {
             session()->flash('flash_message', 'Ha habido un error');
